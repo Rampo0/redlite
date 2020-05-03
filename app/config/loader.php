@@ -9,6 +9,7 @@ $loader = new Loader();
  */
 $loader->registerNamespaces([
     'Redlite\Models' => APP_PATH . '/common/models/',
+    'Redlite\Events' => APP_PATH . '/common/events/',
     'Redlite'        => APP_PATH . '/common/library/',
 ]);
 
@@ -17,7 +18,8 @@ $loader->registerNamespaces([
  */
 $loader->registerClasses([
     'Redlite\Modules\Frontend\Module' => APP_PATH . '/modules/frontend/Module.php',
-    'Redlite\Modules\Cli\Module'      => APP_PATH . '/modules/cli/Module.php'
+    'Redlite\Modules\Cli\Module'      => APP_PATH . '/modules/cli/Module.php',
+    'Redlite\Modules\Post\Module' => APP_PATH . '/modules/post/Module.php',
 ]);
 
 $loader->register();

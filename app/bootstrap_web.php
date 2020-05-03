@@ -46,6 +46,7 @@ try {
      */
     $application->registerModules([
         'frontend' => ['className' => 'Redlite\Modules\Frontend\Module'],
+        'post' => ['className' => 'Redlite\Modules\Post\Module'],
     ]);
 
     /**
