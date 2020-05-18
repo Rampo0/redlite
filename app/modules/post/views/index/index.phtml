@@ -50,7 +50,21 @@
                                 </div>
         
                                 <div class='rating-view col-auto ml-auto d-flex flex-row-reverse align-items-center'>
-                                    <small class='clickable'>RATE POST</small>
+                                    <small class='clickable' onclick='openRateForm($count)'>RATE POST</small>
+                                    
+                                    <form method='post' action='/post/index/rating' class='rating-form'>
+                                        <input placeholder='Rate 1 - 5' step='1' max='5' type='number' name='rating' class='form-control rating-input' ></input>
+                                      
+                                        <input id='ed-postid' type='hidden' name='post_id' value='$post_id' />
+
+                                        <div class='row no-gutters justify-content-center'>
+                                            <button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Rate</button>
+                                            <button style='margin : 3px' class='btn btn-danger btn-sm col-sm-5' type='button' onclick='closeRateForm($count)' >Cancel</button>
+                                        </div>
+                                        
+                                        
+                                    </form>
+
                                     <div class='divider-horizontal'></div>
                                     <small class='total-rate'>$post_rate</small>
                                     <span class='material-icons' style='color : #FEC706;'>
@@ -73,17 +87,7 @@
 
             ?>
 
-          <!-- -->
-                                    
-            <!-- <form method='post' action='/post/index/rating' class='rating-form row'>
-                <input placeholder='Rate 1 - 5' step='0.1' max='5' type='number' name='rating' class='form-control col-sm-9' ></input>
-                <div style='width : 10px;'></div>
-                <input id="ed-postid" type='hidden' name='post_id' value='$post_id' />
-                <button class="btn btn-primary col-sm-2" type="submit">Rate</button>
-            </form> -->
-
-
-
+                                
             <div class="size-box" style="height : 50px;"><div>
 
         </div>

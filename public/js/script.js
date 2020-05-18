@@ -5,6 +5,7 @@ const model_edform = $('.model-edform-container');
 const backdrop = $('.backdrop');
 const body = $('body');
 const title = document.getElementsByClassName("example");
+const form = this.document.getElementsByClassName("rating-form");
 
 function openModel(e) {
     model.fadeIn(200);
@@ -32,6 +33,15 @@ function openEditModel(data) {
     model_edform.fadeIn(200);
     backdrop.show();
     body.css('overflow','hidden');
+}
+
+function closeRateForm(data){
+    form[data].style.display = "none";
+}
+
+function openRateForm(data){
+    
+    form[data].style.display = "block";
 }
 
 

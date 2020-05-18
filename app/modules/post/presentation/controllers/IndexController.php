@@ -20,7 +20,8 @@ class IndexController extends ControllerBase
             echo "invalid csrf !!";
         }
 
-        $user_id = $this->getDI()->getShared("session")->get('user_id');
+        // $user_id = $this->getDI()->getShared("session")->get('user_id');
+        $user_id = 1;
 
         $rating = new Ratings();
         $rating->post_id =  $this->request->getPost('post_id');
