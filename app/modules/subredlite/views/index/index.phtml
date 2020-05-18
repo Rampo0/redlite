@@ -1,0 +1,18 @@
+<div class="page-header">
+    <h1>SubRedlites !</h1>
+</div>
+
+
+<?php
+
+foreach ($subRedlites as $subRedlite) {
+
+    $tokenName = $this->security->getTokenKey();
+    $tokenValue = $this->security->getToken();
+    $subredliteName = $subRedlite->name;
+    $subredliteDesc = $subRedlite->description;
+
+    echo "- $subredliteName <br> $subredliteDesc <br>";
+}
+
+?>

@@ -47,6 +47,7 @@ try {
     $application->registerModules([
         'frontend' => ['className' => 'Redlite\Modules\Frontend\Module'],
         'post' => ['className' => 'Redlite\Modules\Post\Module'],
+        'subredlite' => ['className' => 'Redlite\Modules\Subredlite\Module'],
     ]);
 
     /**
@@ -54,7 +55,7 @@ try {
      */
     require APP_PATH . '/config/routes.php';
 
-    echo $application->handle($_SERVER['REQUEST_URI'])->getContent();
+    echo $application->handle($_GET['_url'] ?? '/')->getContent();
 } catch (\Exception $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';

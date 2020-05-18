@@ -14,7 +14,7 @@ return new \Phalcon\Config([
         'host'     => 'localhost',
         'username' => 'root',
         'password' => '',
-        'dbname'   => 'jobshop',
+        'dbname'   => 'redlite',
         'charset'  => 'utf8',
     ],
 
@@ -23,7 +23,7 @@ return new \Phalcon\Config([
         'modelsDir'      => APP_PATH . '/common/models/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'cacheDir'       => BASE_PATH . '/cache/',
-        'baseUri'        => '/',
+        'baseUri'        => preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]),
     ],
 
     /**
