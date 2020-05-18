@@ -1,46 +1,156 @@
-<div class="page-header">
-    <h1>Post !</h1>
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+
+            <div class="card mt-5">
+                <div class="card-body clickable" onclick="openModel()">
+                    <h5 class="card-text text-title">What's on your mind?</h5>
+                </div>
+            </div>
+
+            <?php
+                $count = 0;
+
+                foreach ($posts as $post) {
+                    $tokenName = $this->security->getTokenKey();
+                    $tokenValue = $this->security->getToken();
+                    $post_desc = $post->description();
+                    $post_rate = $post->averageRating();
+                    $post_id = $post->id()->id();
+                    $post_img = $this->url->get('files/' . $post->file());
+                    $post_title = $post->title();
+                    $post_created_at  = $post->created_at();
+
+                    echo "
+                    <div class='card mt-2'>
+                        <div class='card-body'>
+                            <div style='display : none;' id='id_holder'>$post_id</div>
+                            <div class='my-card-header'>
+                                <p class='card-text text-right'><small class='text-muted'>$post_created_at</small></p> 
+                            </div>
+                            
+                            <h5 class='card-title title text-title'>$post_title</h5>
+                            <img src='$post_img' class='my-card-img' alt='post-img'>
+                        
+                            <p style='margin-top : 6px;' class='card-text desc text-content text-justify'>$post_desc</p>
+                            
+                            
+                            <div class='my-card-footer row align-items-center'>
+        
+                                <div class='action d-flex align-items-center col-auto'>
+                                    <div class='action-item'>
+                                
+                                        <a href='#' onclick='openEditModel($count)'><small style='color : blue;'>EDIT</small></a>
+        
+                                    </div>
+                                    <div class='action-item'>
+                                        <a href='/post/index/delete/$post_id' ><small style='color : red;'>DELETE</small></a>
+                                    </div>
+                                </div>
+        
+                                <div class='rating-view col-auto ml-auto d-flex flex-row-reverse align-items-center'>
+                                    <small class='clickable'>RATE POST</small>
+                                    <div class='divider-horizontal'></div>
+                                    <small class='total-rate'>$post_rate</small>
+                                    <span class='material-icons' style='color : #FEC706;'>
+                                        grade
+                                    </span>
+                            
+                                </div>
+        
+                            </div>
+        
+                        </div>
+                    </div>
+                    ";
+
+                    $count++;
+                    
+    
+                } 
+
+
+            ?>
+
+          <!-- -->
+                                    
+            <!-- <form method='post' action='/post/index/rating' class='rating-form row'>
+                <input placeholder='Rate 1 - 5' step='0.1' max='5' type='number' name='rating' class='form-control col-sm-9' ></input>
+                <div style='width : 10px;'></div>
+                <input id="ed-postid" type='hidden' name='post_id' value='$post_id' />
+                <button class="btn btn-primary col-sm-2" type="submit">Rate</button>
+            </form> -->
+
+
+
+            <div class="size-box" style="height : 50px;"><div>
+
+        </div>
+    </div>
+
 </div>
 
+<div class="backdrop" onclick="closeAllModel()"> </div>
 
-<?php
+<div class="model-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/post/index/create" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+            </div>
 
-foreach ($posts as $post) {
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
 
-    $tokenName = $this->security->getTokenKey();
-    $tokenValue = $this->security->getToken();
-    $post_desc = $post->description();
-    $post_rate = $post->averageRating();
-    $post_id = $post->id()->id();
-    $post_img = $this->url->get('files/' . $post->file());
+            <input type="file" name="file" placeholder="file"><br>
 
-    echo "$post_desc <br> $post_rate <br>
 
-    <img src='$post_img' alt='post_pic' />
-    
-    <form action='/post/index/rating' method='post'>
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
 
-        <input type='radio' id='star1' name='rating' value=1>
-        <label for='star1'>1 Star</label><br>
-        <input type='radio' id='star2' name='rating' value=2>
-        <label for='star2'>2 Star</label><br>
-        <input type='radio' id='star3' name='rating' value=3>
-        <label for='star3'>3 Star</label><br>
-        <input type='radio' id='star4' name='rating' value=4>
-        <label for='star4'>4 Star</label><br>
-        <input type='radio' id='star5' name='rating' value=5>
-        <label for='star5'>5 Star</label><br>
+            <br>
+            
+            <button class="btn btn-primary" type="submit">submit</button>
 
-        <input type='hidden' name='$tokenName'
-        value='$tokenValue'/>
+        </form>
+    </div>
+   
+</div>  
 
-        <input type='hidden' name='post_id'
-        value='$post_id'/>
 
-        <button type='submit'>submit</button>
-    </form> 
-    
-    ";
-}
+<div class="model-edform-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/post/index/edit" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input name="title" type="text" class="form-control" id="ed-title" placeholder="Title">
+            </div>
 
-?>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="description" class="form-control" id="ed-desc" rows="3"></textarea>
+            </div>
+
+            <input type="file" name="file" placeholder="file"><br>
+            <input id="ed-postid" type='hidden' name='post_id' value="" />
+
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">submit</button>
+
+        </form>
+    </div>
+   
+</div>  

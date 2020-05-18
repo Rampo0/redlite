@@ -31,6 +31,49 @@ class IndexController extends ControllerBase
         return $this->response->redirect('/post');
     }
 
+    public function editAction(){
+        if(!$this->security->checkToken()){
+            echo "invalid csrf !!";
+        }
+
+        $post_id = $this->request->getPost('post_id');
+        $post = Posts::findFirst([
+            'conditions' => 'id = :post_id:',
+            'bind'       => [
+                'post_id' => $post_id,
+            ],
+        ]);
+
+        
+        if ($this->request->hasFiles() == true) {
+            $file_name = "";
+            foreach ($this->request->getUploadedFiles() as $file) {
+                $file->moveTo('files/' . $file->getName());
+                $file_name = $file->getName();   
+            }
+            $post->file = $file_name;
+        }
+       
+
+        $post->title = $this->request->getPost('title');
+        $post->description = $this->request->getPost('description');
+        $post->save();
+
+        return $this->response->redirect('/post');
+    }
+
+    public function deleteAction($post_id){
+        $post = Posts::findFirst([
+            'conditions' => 'id = :post_id:',
+            'bind'       => [
+                'post_id' => $post_id,
+            ],
+        ]);
+
+        $post->delete();
+        return $this->response->redirect('/post');
+    }
+
     public function createAction(){
 
         if(!$this->security->checkToken()){
@@ -48,6 +91,8 @@ class IndexController extends ControllerBase
         try{
 
             $this->createPostService->execute(
+                1,
+                $this->request->getPost('title'),
                 $this->request->getPost('description'),
                 $file_name
             );

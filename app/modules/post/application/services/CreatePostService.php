@@ -14,9 +14,9 @@ class CreatePostService{
         $this->repository = $repository;
     }
 
-    public function execute($description ,$file){
+    public function execute($user_id, $title, $description ,$file){
         try{
-            $newPost = Post::createPost($description , $file);
+            $newPost = Post::createPost($user_id , $title, $description , $file);
             $this->repository->create($newPost);
         }catch (\Exception $exception){
             throw new \Exception();

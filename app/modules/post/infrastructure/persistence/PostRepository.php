@@ -12,6 +12,8 @@ class PostRepository implements IPostRepository {
     public function create(Post $post){
         $posts = new Posts();
         $posts->id = $post->id()->id();
+        $posts->title = $post->title();
+        $posts->user_id = $post->user_id();
         $posts->description = $post->description();
         $posts->file = $post->file();
         $posts->save();
