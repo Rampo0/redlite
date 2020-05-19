@@ -162,3 +162,7 @@ a:hover{
 .rating-input{
     margin-bottom: 10px;
 }
+
+.unrate-form{
+    display: none;
+}

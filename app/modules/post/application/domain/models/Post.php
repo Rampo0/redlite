@@ -72,6 +72,14 @@ class Post{
         $this->created_at = $created_at;
     }
 
+    public function setIsRated($isRated){
+        $this->isRatedByYou = $isRated;
+    }
+
+    public function is_rated(){
+        return $this->isRatedByYou;
+    }
+
     public static function createPost($user_id , $title , $description , $file){
         return new Post(new PostId(), $user_id, $title , $description , $file);
     }

@@ -6,7 +6,7 @@ class PostMapper{
 
     private $all_posts = [];
 
-    public function __construct($posts, $ratings)
+    public function __construct($posts, $ratings, $user_id)
     {
         foreach ($posts as $post)
         {
@@ -20,6 +20,11 @@ class PostMapper{
         {
             $post = $this->all_posts[$rating->post_id];
             $post->appendRating($rating);
+
+            if($rating->user_id == $user_id){
+                $post->setIsRated(true);
+            }
+
             $this->all_posts[$rating->post_id] = $post;
         }
     }
