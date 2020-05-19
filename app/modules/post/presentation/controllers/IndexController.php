@@ -11,16 +11,38 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        $posts = $this->getAllPostService->execute();
+         // $user_id = $this->getDI()->getShared("session")->get('user_id');
+        $user_id = 1;
+        $posts = $this->getAllPostService->execute($user_id);
         $this->view->posts = $posts;
     }
 
-    public function ratingAction(){
-        if(!$this->security->checkToken()){
-            echo "invalid csrf !!";
-        }
+    public function unrateAction(){
+         // $user_id = $this->getDI()->getShared("session")->get('user_id');
+         $user_id = 1;
+         $post_id = $this->request->getPost('post_id');
 
-        $user_id = $this->getDI()->getShared("session")->get('user_id');
+         $rating = Ratings::findFirst([
+            'conditions' => 'post_id = :post_id: and user_id = :user_id:',
+            'bind'       => [
+                'post_id' => $post_id,
+                'user_id' => $user_id
+            ],
+         ]);
+
+        $rating->delete();
+            
+        return $this->response->redirect('/post');
+    }
+
+    public function ratingAction(){
+        
+        // if(!$this->security->checkToken()){
+        //     echo "invalid csrf !!";
+        // }
+
+        // $user_id = $this->getDI()->getShared("session")->get('user_id');
+        $user_id = 1;
 
         $rating = new Ratings();
         $rating->post_id =  $this->request->getPost('post_id');
@@ -37,6 +59,7 @@ class IndexController extends ControllerBase
         }
 
         $post_id = $this->request->getPost('post_id');
+        // echo "asdsa $post_id";
         $post = Posts::findFirst([
             'conditions' => 'id = :post_id:',
             'bind'       => [
@@ -60,6 +83,7 @@ class IndexController extends ControllerBase
         $post->save();
 
         return $this->response->redirect('/post');
+        
     }
 
     public function deleteAction($post_id){
@@ -80,6 +104,10 @@ class IndexController extends ControllerBase
             echo "invalid csrf !!";
         }
 
+         // $user_id = $this->getDI()->getShared("session")->get('user_id');
+         $user_id = 1;
+
+
         $file_name = "";
         if ($this->request->hasFiles() == true) {
             foreach ($this->request->getUploadedFiles() as $file) {
@@ -91,7 +119,7 @@ class IndexController extends ControllerBase
         try{
 
             $this->createPostService->execute(
-                1,
+                $user_id,
                 $this->request->getPost('title'),
                 $this->request->getPost('description'),
                 $file_name

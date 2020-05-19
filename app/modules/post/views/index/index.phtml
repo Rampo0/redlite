@@ -11,6 +11,8 @@
 
             <?php
                 $count = 0;
+                $countUnrateForm = 0;
+                $allCount = 0;
 
                 foreach ($posts as $post) {
                     $tokenName = $this->security->getTokenKey();
@@ -21,11 +23,12 @@
                     $post_img = $this->url->get('files/' . $post->file());
                     $post_title = $post->title();
                     $post_created_at  = $post->created_at();
+                    $is_rated = $post->is_rated();
 
                     echo "
                     <div class='card mt-2'>
                         <div class='card-body'>
-                            <div style='display : none;' id='id_holder'>$post_id</div>
+                            <div style='display : none;' class='id_holder'>$post_id</div>
                             <div class='my-card-header'>
                                 <p class='card-text text-right'><small class='text-muted'>$post_created_at</small></p> 
                             </div>
@@ -41,7 +44,7 @@
                                 <div class='action d-flex align-items-center col-auto'>
                                     <div class='action-item'>
                                 
-                                        <a href='#' onclick='openEditModel($count)'><small style='color : blue;'>EDIT</small></a>
+                                        <a href='#' onclick='openEditModel($allCount)'><small style='color : blue;'>EDIT</small></a>
         
                                     </div>
                                     <div class='action-item'>
@@ -50,7 +53,45 @@
                                 </div>
         
                                 <div class='rating-view col-auto ml-auto d-flex flex-row-reverse align-items-center'>
-                                    <small class='clickable'>RATE POST</small>
+
+                            ";
+
+                            if($is_rated){
+                                echo "
+
+                                    <small class='clickable' onclick='submitUnrateForm($countUnrateForm)'>UNRATED</small>
+                                    
+                                   
+                                    <form class='unrate-form' action='/post/index/unrate' method='post'>
+                                        <input type='hidden' name='post_id' value='$post_id' />
+                                    <form>
+
+
+                                ";
+
+                                $countUnrateForm++;
+                            }else{
+                                echo "
+                                    <small class='clickable' onclick='openRateForm($count)'>RATE POST</small>
+                                ";
+                            }
+
+                        
+
+                            echo"
+                                    <form method='post' action='/post/index/rating' class='rating-form'>
+                                        <input placeholder='Rate 1 - 5' step='1' max='5' type='number' name='rating' class='form-control rating-input' ></input>
+                                      
+                                        <input id='ed-postid' type='hidden' name='post_id' value='$post_id' />
+
+                                        <div class='row no-gutters justify-content-center'>
+                                            <button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Rate</button>
+                                            <button style='margin : 3px' class='btn btn-danger btn-sm col-sm-5' type='button' onclick='closeRateForm($count)' >Cancel</button>
+                                        </div>
+                                        
+                                        
+                                    </form>
+
                                     <div class='divider-horizontal'></div>
                                     <small class='total-rate'>$post_rate</small>
                                     <span class='material-icons' style='color : #FEC706;'>
@@ -65,25 +106,19 @@
                     </div>
                     ";
 
-                    $count++;
-                    
+                    if($is_rated == false)
+                    {
+                        $count++;
+                    }
+
+                    $allCount++;
     
                 } 
 
 
             ?>
 
-          <!-- -->
-                                    
-            <!-- <form method='post' action='/post/index/rating' class='rating-form row'>
-                <input placeholder='Rate 1 - 5' step='0.1' max='5' type='number' name='rating' class='form-control col-sm-9' ></input>
-                <div style='width : 10px;'></div>
-                <input id="ed-postid" type='hidden' name='post_id' value='$post_id' />
-                <button class="btn btn-primary col-sm-2" type="submit">Rate</button>
-            </form> -->
-
-
-
+                                
             <div class="size-box" style="height : 50px;"><div>
 
         </div>
@@ -140,7 +175,7 @@
             </div>
 
             <input type="file" name="file" placeholder="file"><br>
-            <input id="ed-postid" type='hidden' name='post_id' value="" />
+            <input id="ed-postidw" type='hidden' name='post_id' />
 
 
             <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
@@ -154,3 +189,9 @@
     </div>
    
 </div>  
+
+<!-- <form class='unrate-form' action='/post/index/unrate' method='post'>
+    <input type='hidden' name='post_id' value='$post_id' />
+    <button class='btn btn-warning btn-sm' type='submit' id='unrate-button'>UNRATED</button>
+<form> -->
+

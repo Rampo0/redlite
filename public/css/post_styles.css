@@ -149,6 +149,20 @@ a:hover{
 }
 
 .rating-form{
-    position: fixed;
-    background-color: white;
+    display: none;
+    position: absolute;
+    width: 200px;
+    bottom: 30px;
+    background-color: #F1F2F2;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+
+.rating-input{
+    margin-bottom: 10px;
+}
+
+.unrate-form{
+    display: none;
 }
