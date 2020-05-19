@@ -17,37 +17,39 @@
 <h4>All Comments</h3>
 {% for comment in comments %}
 <div class="row" style="margin: 10px;">
-    <div class="card col-sm-9">
+    <div class="card col-sm-6">
         <h1>{{ comment.content() }}</h1>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-2">
         <div style="margin: 10px;">
-            Rating : {{ comment.averageRating() }}
+            <h6>Rating : {{ comment.averageRating() }}</h6> 
         </div>
     </div>
-    <div class="col-s-3">
+    <div class="col-s-2">
+        {% if (getDI().getShared('session').has('user_id')) %}
+            {% if (comment.isRated()) %}
+            <a href="/comment/index/unrate/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary' type='submit'>Unrate</button></a>
+            {% else %}
+            <form method='post' action='/comment/index/rating/{{ comment.id() }}' class='rating-form form-inline'>
+                <input placeholder='Rate 1 - 5' step='1' max='5' type='number' name='rating' class='form-control rating-input' ></input>
+                <input id='ed-postid' type='hidden' name='comment_id' value='{{ comment.id() }}' />
+                <button style='margin : 3px' class='btn btn-primary' type='submit'>Rate</button>
+            </form>
+            {% endif %}
+        {% else %}
+            <h6>Login To Rate</h6>
+        {% endif %}
+    </div>  
+    <div class="col-s-2">
         {% if (getDI().getShared('session').has('user_id')) %}
             {% if (comment.userId() == getDI().getShared('session').get('user_id')) %}
+            <a href="/comment/index/edit/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary' type='submit'>Edit</button></a>
             <form method='post' action='/comment/index/delete/{{ comment.id() }}' class='rating-form'>
                 <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />
-                <button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Delete</button>
+                <button style='margin : 3px' class='btn btn-danger' type='submit'>Delete</button>
             </form>
-            <a href="/comment/index/edit/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Edit</button></a>
             {% endif %}
         {% endif %}
-        {% if (comment.isRated()) %}
-        <a href="/comment/index/unrate/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Unrate</button></a>
-        {% else %}
-        <form method='post' action='/comment/index/rating/{{ comment.id() }}' class='rating-form'>
-            <input placeholder='Rate 1 - 5' step='1' max='5' type='number' name='rating' class='form-control rating-input' ></input>
-          
-            <input id='ed-postid' type='hidden' name='comment_id' value='{{ comment.id() }}' />
-
-            <div class='row no-gutters justify-content-center'>
-                <button style='margin : 3px' class='btn btn-primary btn-sm col-sm-5' type='submit'>Rate</button>
-            </div>
-        </form>
-        {% endif %}    
     </div>
 </div>
 {% endfor %}
