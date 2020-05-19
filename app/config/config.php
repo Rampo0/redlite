@@ -14,7 +14,7 @@ return new \Phalcon\Config([
         'host'     => 'localhost',
         'username' => 'root',
         'password' => '',
-        'dbname'   => 'jobshop',
+        'dbname'   => 'redlite_palkon',
         'charset'  => 'utf8',
     ],
 
