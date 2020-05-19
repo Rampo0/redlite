@@ -7,9 +7,19 @@ use Redlite\Modules\Subredlite\Models\SubRedliteModel;
 
 class IndexController extends ControllerBase
 {
-    public function indexAction() {
+    
+    public function indexAction()
+    {
         $subRedlites = $this->getAllSubRedliteService->execute();
         $this->view->subRedlites = $subRedlites;
+    }
+
+    public function indexSubRedliteAction()
+    {
+        $id = $this->dispatcher->getParam("params");
+
+        $subRedlite = $this->getSubRedliteService->execute($id);
+        $this->view->subRedlite = $subRedlite;
     }
 }
 

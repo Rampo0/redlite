@@ -3,9 +3,11 @@
 namespace Redlite\Modules\Subredlite\Models;
 use Phalcon\Mvc\Model;
 
-class SubRedliteModel extends Model {
+class SubRedliteModel extends Model
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         $this->setSource('subredlite');
     }
 

@@ -2,8 +2,9 @@
 
 namespace Redlite\Modules\Subredlite\Models;
 
-class SubRedlite {
-
+class SubRedlite
+{
+    
     private $id;
     private $name;
     private $desc;
@@ -17,7 +18,7 @@ class SubRedlite {
      * @param desc: Description of the subredlite.
      * @param ownerId: Owner Id of the subredlite.
      */
-    public function __construct(SubRedliteId $id, $name, $desc, $ownerId)
+    public function __construct($id, $name, $desc, $ownerId)
     {
         $this->id = $id;
         $this->$name = $name;
@@ -28,35 +29,40 @@ class SubRedlite {
     /**
      * Getter for id
      */
-    public function id() {
+    public function id()
+    {
         return $this->id;
     }
 
     /**
      * Getter for name
      */
-    public function name() {
+    public function name()
+    {
         return $this->name;
     }
 
     /**
      * Getter for desc
      */
-    public function description() {
+    public function description()
+    {
         return $this->desc;
     }
 
     /**
      * Getter for owner Id
      */
-    public function ownerId() {
+    public function ownerId()
+    {
         return $this->ownerId;
     }
 
     /**
      * Add new moderators for this subredlite.
      */
-    public function addMods($modId) {
+    public function addMods($modId)
+    {
         array_push($this->mods , $modId);
     } 
 
@@ -64,8 +70,9 @@ class SubRedlite {
     /**
      * Create a new subredlite.
      */
-    public static function createSubRedlite($name, $desc, $ownerId) {
-        $subredlite = new SubRedlite(new SubRedliteId() , $name , $desc, $ownerId);
+    public static function createSubRedlite($id, $name, $desc, $ownerId)
+    {
+        $subredlite = new SubRedlite($id, $name , $desc, $ownerId);
         // Owner is mod by default.
         $subredlite->addMods($ownerId);
 

@@ -4,7 +4,8 @@ namespace Redlite\Modules\Subredlite\Repository;
 
 use Redlite\Modules\Subredlite\Models\SubRedlite;
 
-interface ISubRedliteRepository {
+interface ISubRedliteRepository
+{
 
     /**
      * Function to create a new subredlite.

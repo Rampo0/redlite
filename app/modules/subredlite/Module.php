@@ -10,6 +10,7 @@ use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Redlite\Modules\Subredlite\Services\CreateSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetAllSubRedliteService;
+use Redlite\Modules\Subredlite\Services\GetSubRedliteService;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
 class Module implements ModuleDefinitionInterface
@@ -48,7 +49,8 @@ class Module implements ModuleDefinitionInterface
         /**
          * Setting up the view component
          */
-        $di->set('view', function () {
+        $di->set('view', function()
+        {
             $view = new View();
             $view->setDI($this);
             $view->setViewsDir(__DIR__ . '/views/');
@@ -62,14 +64,19 @@ class Module implements ModuleDefinitionInterface
         });
 
 
-        $di->setShared('createSubRedliteService', function() {
+        $di->setShared('createSubRedliteService', function()
+        {
             return new CreateSubRedliteService(new SubRedliteRepository());
         });
 
-        $di->setShared('getAllSubRedliteService', function(){
+        $di->setShared('getAllSubRedliteService', function()
+        {
             return new GetAllSubRedliteService(new SubRedliteRepository());
         });
 
-
+        $di->setShared('getSubRedliteService', function()
+        {
+            return new GetSubRedliteService(new SubRedliteRepository());
+        });
     }
 }
