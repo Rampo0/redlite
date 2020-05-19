@@ -21,6 +21,7 @@ $loader->registerClasses([
     'Redlite\Modules\Cli\Module'      => APP_PATH . '/modules/cli/Module.php',
     'Redlite\Modules\Post\Module' => APP_PATH . '/modules/post/Module.php',
     'Redlite\Modules\Subredlite\Module' => APP_PATH . '/modules/subredlite/Module.php',
+    'Redlite\Modules\User\Module' => APP_PATH . '/modules/user/Module.php'
 ]);
 
 $loader->register();

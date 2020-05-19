@@ -48,6 +48,7 @@ try {
         'frontend' => ['className' => 'Redlite\Modules\Frontend\Module'],
         'post' => ['className' => 'Redlite\Modules\Post\Module'],
         'subredlite' => ['className' => 'Redlite\Modules\Subredlite\Module'],
+        'user' => ['className' => 'Redlite\Modules\User\Module']
     ]);
 
     /**
