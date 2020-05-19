@@ -3,6 +3,7 @@
 namespace Redlite\Modules\Subredlite\Repository;
 
 use Redlite\Modules\Subredlite\Models\SubRedlite;
+use Redlite\Modules\Subredlite\Models\Announcement;
 
 interface ISubRedliteRepository
 {
@@ -12,6 +13,11 @@ interface ISubRedliteRepository
      * @param model: new subredlite instance.
      */
     public function createSubRedlite($name, $desc, $ownerId);
+
+    /**
+     * Function to create a new announcement.
+     */
+    public function createAnnouncement(Announcement $post, $subredliteId);
 
     /**
      * Function to create a new mods.

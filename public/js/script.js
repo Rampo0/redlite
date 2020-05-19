@@ -2,6 +2,7 @@
 // model related code
 
 const model = $('.model-container');
+const model_announcement = $('.model-announcement-container');
 const model_edform = $('.model-edform-container');
 const model_edit_form = $('.model-edit-container');
 const model_add_mod_form = $('.model-add-mod-container');
@@ -17,8 +18,18 @@ function openModel(e) {
     body.css('overflow','hidden');
 }
 
+function openAnnouncementModel(data) {
+    var id_holder = this.document.getElementsByClassName("id_holder");
+    document.getElementById("subredlite-id").value = id_holder[data].innerHTML;
+
+    model_announcement.fadeIn(200);
+    backdrop.show();
+    body.css('overflow','hidden');
+}
+
 function closeAllModel(e) {
     model.hide();
+    model_announcement.hide();
     model_edform.hide();
     model_edit_form.hide();
     model_add_mod_form.hide();

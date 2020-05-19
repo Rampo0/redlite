@@ -35,6 +35,7 @@ class Module implements ModuleDefinitionInterface
             'Redlite\Modules\Comment\Services' => __DIR__ . '/application/services/',
             'Redlite\Modules\Comment\InMemory' => __DIR__ . '/infrastructure/persistence/',
             'Redlite\Modules\Post\Models' => __DIR__ . '/../post/application/domain/models/',
+            'Redlite\Modules\Subredlite\Models' => __DIR__ . '/../subredlite/application/domain/models/',
         ]);
 
         $loader->register();

@@ -56,6 +56,10 @@
                                         </div>
 
                                         <div class='action-item'>
+                                            <a href='#' onclick='openAnnouncementModel($index)'><small style='color : green;'>CREATE ANNOUNCEMENT</small></a>
+                                        </div>
+
+                                        <div class='action-item'>
                                             <a href='/subredlite/index/delete/$subredliteId' ><small style='color: red;'>DELETE</small></a>
                                         </div>
                         ";
@@ -185,6 +189,38 @@
             <br>
             
             <button class="btn btn-primary" type="submit">Add Mod</button>
+        </form>
+    </div>
+   
+</div>  
+
+<div class="model-announcement-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/subredlite/index/createannouncement/" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+
+            <input type="file" name="file" placeholder="file"><br>
+
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+            <input id="subredlite-id" type='hidden' name='subredlite-id' />
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Submit</button>
+
         </form>
     </div>
    

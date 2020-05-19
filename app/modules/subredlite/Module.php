@@ -9,6 +9,7 @@ use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Redlite\Modules\Subredlite\Services\CreateSubRedliteService;
+use Redlite\Modules\Subredlite\Services\CreateAnnouncementService;
 use Redlite\Modules\Subredlite\Services\GetAllSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetSubRedliteService;
 use Redlite\Modules\Subredlite\Services\AddModsService;
@@ -69,6 +70,11 @@ class Module implements ModuleDefinitionInterface
         $di->setShared('createSubRedliteService', function()
         {
             return new CreateSubRedliteService(new SubRedliteRepository());
+        });
+
+        $di->setShared('createAnnouncementService', function()
+        {
+            return new CreateAnnouncementService(new SubRedliteRepository());
         });
 
         $di->setShared('getAllSubRedliteService', function()

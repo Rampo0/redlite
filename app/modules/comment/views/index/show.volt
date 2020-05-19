@@ -6,7 +6,7 @@
 {% if (post.able_to_comment == 1) %}
 
     {% if (getDI().getShared('session').has('user_id')) %}
-    <a href="/subredlite/mods/lock/{{ post.id }}"><button style='margin : 3px' class='btn btn-primary btn-sm' type='submit'>Lock Comment Section</button></a>
+    <a href="/subredlite/mods/lock/{{ post.id }}"><button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Lock Comment Section (Mods)</button></a>
 
     <h4>Add New Comment</h5>
     <form action="/comment/index/create/{{ post.id }}" role="form" method="POST" id="newComment">
@@ -34,6 +34,11 @@
     </div>
     <div class="col-s-3">
         {% if (getDI().getShared('session').has('user_id')) %}
+            <form method='post' action='/comment/index/forcedelete/{{ comment.id() }}' class='rating-form'>
+                <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />
+                <button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Force Delete (Mods)</button>
+            </form>
+
             {% if (comment.userId() == getDI().getShared('session').get('user_id')) %}
             <form method='post' action='/comment/index/delete/{{ comment.id() }}' class='rating-form'>
                 <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />

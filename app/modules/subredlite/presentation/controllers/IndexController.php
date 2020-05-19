@@ -55,6 +55,47 @@ class IndexController extends ControllerBase
         return $this->response->redirect('/subredlite');
     }
 
+    public function createAnnouncementAction()
+    {
+
+        if (!$this->security->checkToken())
+        {
+            echo "invalid csrf !!";
+        }
+
+        $user_id = $this->getDI()->getShared("session")->get('user_id');
+
+        $file_name = "";
+        if ($this->request->hasFiles() == true)
+        {
+            foreach ($this->request->getUploadedFiles() as $file)
+            {
+                $file->moveTo('files/' . $file->getName());
+                $file_name = $file->getName();   
+            }
+        }
+
+        $redliteId = $this->request->getPost('subredlite-id');
+       
+        try
+        {
+            $this->createAnnouncementService->execute(
+                $user_id,
+                $this->request->getPost('title'),
+                $this->request->getPost('description'),
+                $file_name,
+                $redliteId
+            );
+    
+        }
+        catch (\Exception $e)
+        {
+            echo "something error !!";
+        }
+
+        return $this->response->redirect('/subredlite');
+    }
+
     public function deleteAction($subredliteId)
     {
         $subredlite = SubRedliteModel::findFirst([

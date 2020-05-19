@@ -6,6 +6,8 @@ use Redlite\Modules\Subredlite\Repository\ISubRedliteRepository;
 use Redlite\Modules\Subredlite\Models\SubRedlite;
 use Redlite\Modules\Subredlite\Models\SubRedliteModel;
 use Redlite\Modules\Subredlite\Models\Moderators;
+use Redlite\Modules\Subredlite\Models\Announcement;
+use Redlite\Modules\Post\Models\Posts;
 
 class SubRedliteRepository implements ISubRedliteRepository
 {
@@ -22,6 +24,26 @@ class SubRedliteRepository implements ISubRedliteRepository
         $subredlite->owner_id = $ownerId;
         
         $subredlite->save();
+
+        $this->addNewMod($subredlite->id, $ownerId);
+    }
+
+    /**
+     * Function to create a new announcement.
+     */
+    public function createAnnouncement(Announcement $post, $subredliteId)
+    {
+        $announcement = new Posts();
+
+        $announcement->id = $post->id()->id();
+        $announcement->title = $post->title();
+        $announcement->user_id = $post->user_id();
+        $announcement->description = $post->description();
+        $announcement->is_announcement = 1;
+        $announcement->subredlite_id = $subredliteId;
+        $announcement->file = $post->file();
+        
+        $announcement->save();
 
         $this->addNewMod($subredlite->id, $ownerId);
     }
