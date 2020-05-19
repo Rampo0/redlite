@@ -37,7 +37,7 @@ class Comment{
     public function averageRating(){
         $total = 0;
         foreach ($this->rating as $rate) {
-            $total+=$rate->rating;
+            $total+=$rate;
         }
         
         if(count($this->rating) > 0){
@@ -47,7 +47,11 @@ class Comment{
         return 0;
     }
 
-    public function setRated(){
+    public function isRated(){
+        return $this->isRated;
+    }
+
+    public function setRate(){
         $this->isRated = true;
     }
 

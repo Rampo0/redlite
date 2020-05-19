@@ -30,13 +30,11 @@ class Module implements ModuleDefinitionInterface
         $loader->registerNamespaces([
             'Redlite\Modules\Comment\Controllers' => __DIR__ . '/presentation/controllers/',
             'Redlite\Modules\Comment\Models' => __DIR__ . '/application/domain/models/',
-            'Redlite\Modules\Comment\Exceptions' => __DIR__ . '/application/domain/exceptions/',
-            'Redlite\Modules\Comment\Requests' => __DIR__ . '/application/domain/Requests/',
-            'Redlite\Modules\Comment\Responses' => __DIR__ . '/application/domain/Responses/',
             'Redlite\Modules\Comment\Forms' => __DIR__ . '/application/domain/forms/',
             'Redlite\Modules\Comment\Repository' => __DIR__ . '/application/domain/repository/',
             'Redlite\Modules\Comment\Services' => __DIR__ . '/application/services/',
             'Redlite\Modules\Comment\InMemory' => __DIR__ . '/infrastructure/persistence/',
+            'Redlite\Modules\Post\Models' => __DIR__ . '/../post/application/domain/models/',
         ]);
 
         $loader->register();

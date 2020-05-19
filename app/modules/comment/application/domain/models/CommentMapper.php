@@ -12,13 +12,15 @@ class CommentMapper{
 
         foreach ($ratings as $rating){
             $comment = $this->all_comments[$rating->comment_id];
-            $comment->addRate($rating->rate);
+            if($comment){
+                $comment->addRate($rating->rating);
 
-            if($rating->user_id == $user_id){
-                $comment->setRate();
+                if($rating->user_id == $user_id){
+                    $comment->setRate();
+                }
+
+                $this->all_comments[$rating->comment_id] = $comment;
             }
-
-            $this->all_comments[$rating->comment_id] = $comment;
         }
     }
 

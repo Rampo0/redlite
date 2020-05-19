@@ -11,7 +11,7 @@ use Phalcon\Mvc\Model\Query;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\Manager;
 
-class CommentRepository extends ICommentRepository{
+class CommentRepository{
     public function create(Comment $comment){
         $newComment = new Comments();
         $newComment->user_id = $comment->userId();
@@ -32,27 +32,25 @@ class CommentRepository extends ICommentRepository{
     }
 
     public function findComments($post_id){
-        $listAllComment = $this
-            ->modelsManager
-            ->executeQuery(
-                'SELECT * FROM Redlite\Modules\Comment\Models\Comments WHERE post_id = :id:',
-                [
-                    'id' => $post_id,
-                ]
-            );
+        $listAllComment = Comments::find([
+            'conditions' => 'post_id = :postid:',
+            'bind'  => [
+                'postid' => $post_id,
+            ]
+        ]);
 
         return $listAllComment;
     }
 
     public function findRatings($comment_id){
-        $listAllRating = $this
-            ->modelsManager
-            ->executeQuery(
-                'SELECT * FROM Redlite\Modules\Comment\Models\Ratingcom WHERE comment_id = :id:',
-                [
-                    'id' => $comment_id,
-                ]
-            );
+        // $listAllRating = Ratingcom::find([
+        //     'conditions' => 'comment_id = :comment:',
+        //     'bind'  => [
+        //         'comment' => $comment_id,
+        //     ]
+        // ]);
+
+        $listAllRating = Ratingcom::find();
         
         return $listAllRating;
     }
