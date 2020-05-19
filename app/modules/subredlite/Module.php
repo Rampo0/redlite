@@ -11,6 +11,7 @@ use Phalcon\Mvc\ModuleDefinitionInterface;
 use Redlite\Modules\Subredlite\Services\CreateSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetAllSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetSubRedliteService;
+use Redlite\Modules\Subredlite\Services\AddModsService;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
 class Module implements ModuleDefinitionInterface
@@ -77,6 +78,11 @@ class Module implements ModuleDefinitionInterface
         $di->setShared('getSubRedliteService', function()
         {
             return new GetSubRedliteService(new SubRedliteRepository());
+        });
+
+        $di->setShared('addModsService', function()
+        {
+            return new AddModsService(new SubRedliteRepository());
         });
     }
 }

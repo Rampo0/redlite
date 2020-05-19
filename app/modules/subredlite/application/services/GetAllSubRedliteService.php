@@ -4,6 +4,7 @@
 namespace Redlite\Modules\Subredlite\Services;
 
 use Redlite\Modules\Subredlite\Models\SubRedlite;
+use Redlite\Modules\Subredlite\Models\ModsMapper;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
 class GetAllSubRedliteService
@@ -20,8 +21,13 @@ class GetAllSubRedliteService
     {
         try
         {
-            $subredlites = $this->repository->getAllSubRedlite();
-            return $subredlites;
+            $subs = $this->repository->getAllSubRedlite();
+            $mods = $this->repository->getAllMods();
+
+            $mapped = new ModsMapper($subs, $mods);
+            $allSubs = $mapped->get();
+
+            return $allSubs;
         }
         catch (\Exception $exception)
         {

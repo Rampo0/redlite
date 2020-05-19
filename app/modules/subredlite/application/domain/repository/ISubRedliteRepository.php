@@ -11,7 +11,12 @@ interface ISubRedliteRepository
      * Function to create a new subredlite.
      * @param model: new subredlite instance.
      */
-    public function createSubRedlite(SubRedlite $model);
+    public function createSubRedlite($name, $desc, $ownerId);
+
+    /**
+     * Function to create a new mods.
+     */
+    public function addNewMod($subsId, $userId);
 
     /**
      * Function to get all registered subredlite.
@@ -23,6 +28,11 @@ interface ISubRedliteRepository
      * @param id: Integer id of the subredlite.
      */
     public function getSubRedlite($id);
+
+    /**
+     * Function to get all moderators of subredlite.
+     */
+    public function getAllMods();
 }
 
 ?>

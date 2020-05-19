@@ -3,10 +3,10 @@
 
 namespace Redlite\Modules\Subredlite\Services;
 
-use Redlite\Modules\Subredlite\Models\SubRedlite;
+use Redlite\Modules\Subredlite\Models\Moderators;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
-class CreateSubRedliteService
+class AddModsService
 {
 
     private $repository;
@@ -16,11 +16,11 @@ class CreateSubRedliteService
         $this->repository = $repository;
     }
 
-    public function execute($name, $desc, $ownerId)
+    public function execute($userId, $subsId)
     {
         try
         {
-            $this->repository->createSubRedlite($name, $desc, $ownerId);
+            $this->repository->addNewMod($subsId, $userId);
         }
         catch (\Exception $exception)
         {

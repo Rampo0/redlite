@@ -1,5 +1,7 @@
 <div class="container-fluid">
 
+    <?php $this->flashSession->output() ?>
+
     <div class="row justify-content-center">
 
         <div class="col-sm-8">
@@ -11,20 +13,23 @@
 
             <?php
 
-                foreach ($subRedlites as $subRedlite) {
+                $index = 0;
 
+                foreach ($subRedlites as $subRedlite) {
                     $tokenName = $this->security->getTokenKey();
                     $tokenValue = $this->security->getToken();
-                    $subredliteId = $subRedlite->id;
-                    $subredliteName = $subRedlite->name;
-                    $subredliteDesc = $subRedlite->description;
-                    $subredliteOwner = $subRedlite->owner_id;
+                    $subredliteId = $subRedlite->id();
+                    $subredliteName = $subRedlite->name();
+                    $subredliteDesc = $subRedlite->description();
+                    $subredliteOwner = $subRedlite->ownerId();
+                    $subredliteMods = $subRedlite->mods();
 
                     echo "
                         <a href='/redlite/subredlite/$subredliteId'>
                         <div class='card mt-2'>
                             <div class='card-body'>
-                                <h5 class='card-title title text-title'>$subredliteName</h5>
+                                <div style='display : none;' class='id_holder'>$subredliteId</div>
+                                <h5 class='card-title name text-title'>$subredliteName</h5>
                                 <p style='margin-top : 6px;' class='card-text desc text-content text-justify'>$subredliteDesc</p>
                             
                                 <div class='my-card-footer row align-items-center'>
@@ -32,14 +37,26 @@
 
                     ";
 
-                    if ($userId == $subredliteOwner) {
+                    if (in_array($userId, $subredliteMods)) {
                         echo "
                                         <div class='action-item'>
-                                            <a href='#' onclick='openEditModel($subredliteId)'><small style='color : blue;'>EDIT</small></a>
+                                            <a href='#' onclick='openSubRedliteEditModel($index)'><small style='color : blue;'>EDIT</small></a>
+                                        </div>
+
+                                        <div class='action-item'>
+                                            <a href='#' onclick='openAddModModel($index)'><small style='color : blue;'>ADD MOD</small></a>
                                         </div>
 
                                         <div class='action-item'>
                                             <a href='/redlite/subredlite/index/delete/$subredliteId' ><small style='color: red;'>DELETE</small></a>
+                                        </div>
+                        ";
+                    }
+
+                    if ($userId == $subredliteOwner) {
+                        echo "
+                                        <div class='action-item'>
+                                            <a href='#' onclick='openSubRedliteEditModel($index)'><small style='color : blue;'>MODS LIST</small></a>
                                         </div>
                         ";
                     }
@@ -51,6 +68,8 @@
                         </div>
                         </a>
                     ";
+
+                    $index++;
                 }
             ?>
             
@@ -88,28 +107,57 @@
     </div>
 </div>  
 
-
-<div class="model-edform-container">
+<div class="model-edit-container">
+  
     <div class="model center">
-        <form class="post-form" action="/redlite/subredlite/index/delete/$subredliteId" method="post" enctype="multipart/form-data">
+        <form class="post-form" action="/redlite/subredlite/index/edit" method="post" enctype="multipart/form-data">
             
             <div class="form-group">
-                <label for="exampleFormControlInput1">Title</label>
-                <input name="title" type="text" class="form-control" id="ed-title" placeholder="Title">
+                <label for="edit-name">Name</label>
+                <input name="edit-name" type="text" class="form-control" id="edit-name" placeholder="Name">
             </div>
 
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Description</label>
-                <textarea name="description" class="form-control" id="ed-desc" rows="3"></textarea>
+                <label for="edit-description">Description</label>
+                <textarea name="edit-description" class="form-control" id="edit-description" rows="3"></textarea>
             </div>
-
-            <input id="ed-postidw" type='hidden' name='post_id' />
 
             <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
                 value='<?php echo $this->security->getToken() ?>'/>
+
+
+            <input id="edit-subredlite-id" type='hidden' name='edit-subredlite-id' />
+
+            <br>
             
-            <button class="btn btn-primary" type="submit">submit</button>
+            <button class="btn btn-primary" type="submit">Edit</button>
 
         </form>
     </div>
+   
+</div>  
+
+
+<div class="model-add-mod-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/redlite/subredlite/index/mod" method="post" enctype="multipart/form-data">
+        
+            <div class="form-group">
+                <label for="edit-user-id">User ID</label>
+                <input name="edit-user-id" type="number" class="form-control" id="edit-user-id" placeholder="User ID">
+            </div>
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+
+            <input id="mod-subredlite-id" type='hidden' name='mod-subredlite-id' />
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Add Mod</button>
+        </form>
+    </div>
+   
 </div>  

@@ -33,11 +33,11 @@ foreach ($application->getModules() as $key => $module) {
     /**
      * Subredlite Section because fuck it, hardcoded because it's so fucking dumb
      */
-    $router->add('/subredlite/([0-9])', [
+    $router->add('/subredlite/:int', [
         'namespace' => $namespace,
         'module' => 'subredlite',
         'controller' => 'subredlite',
         'action' => 'index',
-        'id' => 1
+        'subredlite_id' => 1
     ]);
 }

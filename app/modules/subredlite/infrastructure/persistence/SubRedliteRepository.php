@@ -5,24 +5,38 @@ namespace Redlite\Modules\Subredlite\InMemory;
 use Redlite\Modules\Subredlite\Repository\ISubRedliteRepository;
 use Redlite\Modules\Subredlite\Models\SubRedlite;
 use Redlite\Modules\Subredlite\Models\SubRedliteModel;
+use Redlite\Modules\Subredlite\Models\Moderators;
 
 class SubRedliteRepository implements ISubRedliteRepository
 {
     
-     /**
+    /**
      * Function to create a new subredlite.
-     * @param model: new subredlite instance.
      */
-    public function createSubRedlite(SubRedlite $model)
+    public function createSubRedlite($name, $desc, $ownerId)
     {
         $subredlite = new SubRedliteModel();
 
-        $subredlite->id = $model->id();
-        $subredlite->name = $model->name();
-        $subredlite->description = $model->description();
-        $subredlite->owner_id = $model->ownerId();
-
+        $subredlite->name = $name;
+        $subredlite->description = $desc;
+        $subredlite->owner_id = $ownerId;
+        
         $subredlite->save();
+
+        $this->addNewMod($subredlite->id, $ownerId);
+    }
+
+    /**
+     * Function to create a new mods.
+     */
+    public function addNewMod($subsId, $userId)
+    {
+        $mod = new Moderators();
+        $mod->user_id = $userId;
+        $mod->subredlite_id = $subsId;
+        $mod->active = 1;
+
+        $mod->save();
     }
 
     /**
@@ -40,6 +54,14 @@ class SubRedliteRepository implements ISubRedliteRepository
     public function getSubRedlite($id)
     {
         return SubRedliteModel::findFirst($id);
+    }
+
+    /**
+     * Function to get all moderators of subredlite.
+     */
+    public function getAllMods()
+    {
+        return Moderators::find();
     }
 
 }
