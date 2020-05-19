@@ -22,6 +22,7 @@ $loader->registerClasses([
     'Redlite\Modules\Post\Module' => APP_PATH . '/modules/post/Module.php',
     'Redlite\Modules\Subredlite\Module' => APP_PATH . '/modules/subredlite/Module.php',
     'Redlite\Modules\User\Module' => APP_PATH . '/modules/user/Module.php'
+    'Redlite\Modules\Comment\Module' => APP_PATH . '/modules/comment/Module.php'
 ]);
 
 $loader->register();
