@@ -29,15 +29,11 @@ foreach ($application->getModules() as $key => $module) {
         'params' => 3
     ]);
 
-
-    /**
-     * Subredlite Section because fuck it, hardcoded because it's so fucking dumb
-     */
-    $router->add('/subredlite/:int', [
+    $router->add('/'.$key.'/:controller/:action/:int', [
         'namespace' => $namespace,
-        'module' => 'subredlite',
-        'controller' => 'subredlite',
-        'action' => 'index',
-        'subredlite_id' => 1
+        'module' => $key,
+        'controller' => 1,
+        'action' => 2,
+        'id' => 3
     ]);
 }

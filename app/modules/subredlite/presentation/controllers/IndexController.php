@@ -10,10 +10,18 @@ class IndexController extends ControllerBase
     
     public function indexAction()
     {
+
+        $user_id = $this->getDI()->getShared("session")->get('user_id');
+        if (!$user_id)
+        {
+            return $this->response->redirect("/user");
+        }
+
         $subRedlites = $this->getAllSubRedliteService->execute();
+        
 
         $this->view->subRedlites = $subRedlites;
-        $this->view->userId = 1;
+        $this->view->userId = $user_id;
     }
 
     public function createAction()
@@ -24,7 +32,11 @@ class IndexController extends ControllerBase
             echo "invalid csrf !!";
         }
 
-        $user_id = 1;
+        $user_id = $this->getDI()->getShared("session")->get('user_id');
+        if (!$user_id)
+        {
+            return $this->response->redirect("/user");
+        }
        
         try
         {

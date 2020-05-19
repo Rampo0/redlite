@@ -18,7 +18,8 @@ class ModsMapper
         foreach ($mods as $mod)
         {
             $sub = $this->all_subs[$mod->subredlite_id];
-            $sub->addMods($mod->user_id);
+            $modObj = new SubsMod($mod->id, $mod->subredlite_id, $mod->user_id, $mod->active);
+            $sub->addMods($modObj);
 
             $this->all_subs[$mod->subredlite_id] = $sub;
         }

@@ -25,7 +25,6 @@
                     $subredliteMods = $subRedlite->mods();
 
                     echo "
-                        <a href='/redlite/subredlite/$subredliteId'>
                         <div class='card mt-2'>
                             <div class='card-body'>
                                 <div style='display : none;' class='id_holder'>$subredliteId</div>
@@ -37,7 +36,16 @@
 
                     ";
 
-                    if (in_array($userId, $subredliteMods)) {
+                    $isOwner = false;
+
+                    foreach ($subredliteMods as $mod) {
+                        if ($mod->user_id == $userId && $mod->active == 1) {
+                            $isOwner = true;
+                            break;
+                        }
+                    }
+
+                    if ($isOwner) {
                         echo "
                                         <div class='action-item'>
                                             <a href='#' onclick='openSubRedliteEditModel($index)'><small style='color : blue;'>EDIT</small></a>
@@ -48,15 +56,7 @@
                                         </div>
 
                                         <div class='action-item'>
-                                            <a href='/redlite/subredlite/index/delete/$subredliteId' ><small style='color: red;'>DELETE</small></a>
-                                        </div>
-                        ";
-                    }
-
-                    if ($userId == $subredliteOwner) {
-                        echo "
-                                        <div class='action-item'>
-                                            <a href='#' onclick='openSubRedliteEditModel($index)'><small style='color : blue;'>MODS LIST</small></a>
+                                            <a href='/subredlite/index/delete/$subredliteId' ><small style='color: red;'>DELETE</small></a>
                                         </div>
                         ";
                     }
@@ -66,8 +66,36 @@
                                 </div>
                             </div>
                         </div>
-                        </a>
                     ";
+
+                    
+                    if ($userId == $subredliteOwner) {
+                        echo "<div class='list-group'>";
+                        
+                        foreach($subredliteMods as $mods) {
+                            if ($mods->user_id != $subredliteOwner ) {
+                                if ($mods->active == 1) {
+                                    echo " 
+                                    <a href='#' class='list-group-item list-group-item-action flex-column align-items-start'>
+                                        <p class='mb-1'>$mods->user_id</p>
+                                        <small class='text-muted'><a href='/subredlite/mods/delete/$mods->id' ><small style='color: red;'>Remove Access</small></a></small>
+                                    </a>
+                                        
+                                    ";
+                                } else {
+                                    echo " 
+                                    <a href='#' class='list-group-item list-group-item-action flex-column align-items-start list-group-item-dark'>
+                                        <p class='mb-1'>$mods->user_id</p>
+                                        <small class='text-muted'>Non-Active Mods</small>
+                                    </a>
+                                        
+                                    ";
+                                }
+                            }
+                        }
+
+                        echo "</div>";
+                    }
 
                     $index++;
                 }
@@ -84,7 +112,7 @@
 <div class="model-container">
   
     <div class="model center">
-        <form class="post-form" action="/redlite/subredlite/index/create" method="post" enctype="multipart/form-data">
+        <form class="post-form" action="/subredlite/index/create" method="post" enctype="multipart/form-data">
             
             <div class="form-group">
                 <label for="nameFormInput">Name</label>
@@ -110,7 +138,7 @@
 <div class="model-edit-container">
   
     <div class="model center">
-        <form class="post-form" action="/redlite/subredlite/index/edit" method="post" enctype="multipart/form-data">
+        <form class="post-form" action="/subredlite/index/edit" method="post" enctype="multipart/form-data">
             
             <div class="form-group">
                 <label for="edit-name">Name</label>
@@ -141,7 +169,7 @@
 <div class="model-add-mod-container">
   
     <div class="model center">
-        <form class="post-form" action="/redlite/subredlite/index/mod" method="post" enctype="multipart/form-data">
+        <form class="post-form" action="/subredlite/index/mod" method="post" enctype="multipart/form-data">
         
             <div class="form-group">
                 <label for="edit-user-id">User ID</label>
