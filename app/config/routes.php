@@ -28,4 +28,12 @@ foreach ($application->getModules() as $key => $module) {
         'action' => 2,
         'params' => 3
     ]);
+
+    $router->add('/subredlite/([0-9])', [
+        'namespace' => $namespace,
+        'module' => 'subredlite',
+        'controller' => 'subredlite',
+        'action' => 'index',
+        'id' => 1
+    ]);
 }

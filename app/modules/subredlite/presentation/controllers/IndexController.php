@@ -13,13 +13,5 @@ class IndexController extends ControllerBase
         $subRedlites = $this->getAllSubRedliteService->execute();
         $this->view->subRedlites = $subRedlites;
     }
-
-    public function indexSubRedliteAction()
-    {
-        $id = $this->dispatcher->getParam("params");
-
-        $subRedlite = $this->getSubRedliteService->execute($id);
-        $this->view->subRedlite = $subRedlite;
-    }
 }
 

@@ -1,0 +1,16 @@
+<div class="page-header">
+    <h1>SubRedlite <?php echo $subRedlite->id ?></h1>
+</div>
+
+
+<?php
+
+$tokenName = $this->security->getTokenKey();
+$tokenValue = $this->security->getToken();
+$subredliteName = $subRedlite->name;
+$subredliteDesc = $subRedlite->description;
+
+echo "- $subredliteName <br> $subredliteDesc <br>";
+
+
+?>
