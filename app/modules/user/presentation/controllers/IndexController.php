@@ -12,9 +12,18 @@ class IndexController extends ControllerBase
 
     public function indexAction(){
         $login_form = new LoginForm();
-        $register_form = new RegisterForm();
-
+        
         $this->view->loginForm = $login_form;
+        
+        $sessions = $this->getDI()->getShared("session");
+
+        if ($sessions->has("user_id")) {
+            return $this->response->redirect("/");
+        }
+    }
+
+    public function signupAction(){
+        $register_form = new RegisterForm();
         $this->view->regForm = $register_form; 
 
         $sessions = $this->getDI()->getShared("session");
@@ -22,6 +31,7 @@ class IndexController extends ControllerBase
         if ($sessions->has("user_id")) {
             return $this->response->redirect("/");
         }
+        
     }
 
     public function registerAction(){

@@ -4,6 +4,7 @@ namespace Redlite\Modules\User\Forms;
 
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Element\Email as FormEmail;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email;
@@ -14,7 +15,7 @@ class LoginForm extends Form
     public function initialize(){
         $this->setEntity($this);
 
-        $email = new Text("email");
+        $email = new FormEmail("email");
         $email->setAttribute('placeholder','Email');
         $email->addValidator(new PresenceOf(array(
             'message' => 'Email Address is required'
