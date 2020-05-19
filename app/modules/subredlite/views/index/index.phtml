@@ -1,0 +1,227 @@
+<div class="container-fluid">
+
+    <?php $this->flashSession->output() ?>
+
+    <div class="row justify-content-center">
+
+        <div class="col-sm-8">
+            <div class="card mt-5">
+                <div class="card-body clickable" onclick="openModel()">
+                    <h5 class="card-text text-title">Create new Subredlite</h5>
+                </div>
+            </div>
+
+            <?php
+
+                $index = 0;
+
+                foreach ($subRedlites as $subRedlite) {
+                    $tokenName = $this->security->getTokenKey();
+                    $tokenValue = $this->security->getToken();
+                    $subredliteId = $subRedlite->id();
+                    $subredliteName = $subRedlite->name();
+                    $subredliteDesc = $subRedlite->description();
+                    $subredliteOwner = $subRedlite->ownerId();
+                    $subredliteMods = $subRedlite->mods();
+
+                    echo "
+                        <div class='card mt-2'>
+                            <div class='card-body'>
+                                <div style='display : none;' class='id_holder'>$subredliteId</div>
+                                <h5 class='card-title name text-title'>$subredliteName</h5>
+                                <p style='margin-top : 6px;' class='card-text desc text-content text-justify'>$subredliteDesc</p>
+                            
+                                <div class='my-card-footer row align-items-center'>
+                                    <div class='action d-flex align-items-center col-auto'>
+
+                    ";
+
+                    $isOwner = false;
+
+                    foreach ($subredliteMods as $mod) {
+                        if ($mod->user_id == $userId && $mod->active == 1) {
+                            $isOwner = true;
+                            break;
+                        }
+                    }
+
+                    if ($isOwner) {
+                        echo "
+                                        <div class='action-item'>
+                                            <a href='#' onclick='openSubRedliteEditModel($index)'><small style='color : blue;'>EDIT</small></a>
+                                        </div>
+
+                                        <div class='action-item'>
+                                            <a href='#' onclick='openAddModModel($index)'><small style='color : blue;'>ADD MOD</small></a>
+                                        </div>
+
+                                        <div class='action-item'>
+                                            <a href='#' onclick='openAnnouncementModel($index)'><small style='color : green;'>CREATE ANNOUNCEMENT</small></a>
+                                        </div>
+
+                                        <div class='action-item'>
+                                            <a href='/subredlite/index/delete/$subredliteId' ><small style='color: red;'>DELETE</small></a>
+                                        </div>
+                        ";
+                    }
+
+                    echo "
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ";
+
+                    
+                    if ($userId == $subredliteOwner) {
+                        echo "<div class='list-group'>";
+                        
+                        foreach($subredliteMods as $mods) {
+                            if ($mods->user_id != $subredliteOwner ) {
+                                if ($mods->active == 1) {
+                                    echo " 
+                                    <a href='#' class='list-group-item list-group-item-action flex-column align-items-start'>
+                                        <p class='mb-1'>$mods->user_id</p>
+                                        <small class='text-muted'><a href='/subredlite/mods/delete/$mods->id' ><small style='color: red;'>Remove Access</small></a></small>
+                                    </a>
+                                        
+                                    ";
+                                } else {
+                                    echo " 
+                                    <a href='#' class='list-group-item list-group-item-action flex-column align-items-start list-group-item-dark'>
+                                        <p class='mb-1'>$mods->user_id</p>
+                                        <small class='text-muted'>Non-Active Mods</small>
+                                    </a>
+                                        
+                                    ";
+                                }
+                            }
+                        }
+
+                        echo "</div>";
+                    }
+
+                    $index++;
+                }
+            ?>
+            
+            <div class="size-box" style="height : 50px;"><div>
+
+        </div>
+    </div>
+</div>
+
+<div class="backdrop" onclick="closeAllModel()"> </div>
+
+<div class="model-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/subredlite/index/create" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="nameFormInput">Name</label>
+                <input name="name" type="text" class="form-control" id="nameFormInput" placeholder="Name">
+            </div>
+
+            <div class="form-group">
+                <label for="descFormInput">Description</label>
+                <textarea name="description" class="form-control" id="descFormInput" rows="3"></textarea>
+            </div>
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Create</button>
+
+        </form>
+    </div>
+</div>  
+
+<div class="model-edit-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/subredlite/index/edit" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="edit-name">Name</label>
+                <input name="edit-name" type="text" class="form-control" id="edit-name" placeholder="Name">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-description">Description</label>
+                <textarea name="edit-description" class="form-control" id="edit-description" rows="3"></textarea>
+            </div>
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+
+            <input id="edit-subredlite-id" type='hidden' name='edit-subredlite-id' />
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Edit</button>
+
+        </form>
+    </div>
+   
+</div>  
+
+
+<div class="model-add-mod-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/subredlite/index/mod" method="post" enctype="multipart/form-data">
+        
+            <div class="form-group">
+                <label for="edit-user-id">User ID</label>
+                <input name="edit-user-id" type="number" class="form-control" id="edit-user-id" placeholder="User ID">
+            </div>
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+
+            <input id="mod-subredlite-id" type='hidden' name='mod-subredlite-id' />
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Add Mod</button>
+        </form>
+    </div>
+   
+</div>  
+
+<div class="model-announcement-container">
+  
+    <div class="model center">
+        <form class="post-form" action="/subredlite/index/createannouncement/" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+
+            <input type="file" name="file" placeholder="file"><br>
+
+
+            <input type='hidden' name='<?php echo $this->security->getTokenKey() ?>'
+                value='<?php echo $this->security->getToken() ?>'/>
+
+            <input id="subredlite-id" type='hidden' name='subredlite-id' />
+
+            <br>
+            
+            <button class="btn btn-primary" type="submit">Submit</button>
+
+        </form>
+    </div>
+   
+</div>  

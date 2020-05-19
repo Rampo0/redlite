@@ -28,4 +28,12 @@ foreach ($application->getModules() as $key => $module) {
         'action' => 2,
         'params' => 3
     ]);
+
+    $router->add('/'.$key.'/:controller/:action/:int', [
+        'namespace' => $namespace,
+        'module' => $key,
+        'controller' => 1,
+        'action' => 2,
+        'id' => 3
+    ]);
 }

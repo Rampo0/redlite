@@ -23,7 +23,7 @@ return new \Phalcon\Config([
         'modelsDir'      => APP_PATH . '/common/models/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'cacheDir'       => BASE_PATH . '/cache/',
-        'baseUri'        => '/',
+        'baseUri'        => '/'
     ],
 
     /**

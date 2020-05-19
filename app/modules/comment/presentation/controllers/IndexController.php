@@ -7,6 +7,7 @@ use Redlite\Modules\Comment\Models\Comments;
 use Redlite\Modules\Comment\Models\Ratingcom;
 use Redlite\Modules\Post\Models\Post;
 use Redlite\Modules\Post\Models\Posts;
+use Redlite\Modules\Subredlite\Models\Moderators;
 
 class IndexController extends ControllerBase{
     public function indexAction(){
@@ -63,6 +64,39 @@ class IndexController extends ControllerBase{
     public function deleteAction($comment_id){
         $comment = Comments::findFirstById($comment_id);
         $comment->delete();
+        
+        return $this->response->redirect('/comment/index/show/' . $this->request->getPost('post_id'));
+    }
+
+    /**
+     * Function to force delete comments (only for mods).
+     * TODO: Probably we can centralize our mods checking method.
+     */
+    public function forceDeleteAction($comment_id)
+    {
+        $user_id = $this->getDI()->getShared("session")->get('user_id');
+
+        $post = Posts::findFirst([
+            'conditions' => 'id = :post_id:',
+            'bind'       => [
+                'post_id' => $this->request->getPost('post_id'),
+            ],
+        ]);
+
+        
+        $mod = Moderators::findFirst([
+            'subredlite_id = :subredlite_id: AND user_id = :user_id: AND active = 1',
+            'bind'       => [
+                'subredlite_id' => $post->subredlite_id,
+                'user_id' => $user_id,
+            ],
+        ]);
+
+        if ($mod)
+        {
+            $comment = Comments::findFirstById($comment_id);
+            $comment->delete();
+        }
         
         return $this->response->redirect('/comment/index/show/' . $this->request->getPost('post_id'));
     }

@@ -109,7 +109,28 @@ a:hover{
     display: none;
 }
 
+.model-announcement-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
 .model-edform-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.model-edit-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.model-add-mod-container{
     position: absolute;
     width: 100%;
     height: 100%;

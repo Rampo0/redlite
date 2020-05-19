@@ -3,14 +3,21 @@
 <h2>{{ post.description }}</h6>
 
 <br><br>
-{% if (getDI().getShared('session').has('user_id')) %}
-<h4>Add New Comment</h5>
-<form action="/comment/index/create/{{ post.id }}" role="form" method="POST" id="newComment">
-    <textarea name="content" cols="55" rows="5" form="newComment" placeholder="Add new comment" class="form-control"></textarea><br>
-    <input type="submit" value="Add Comment" class="btn btn-primary">
-</form>
+{% if (post.able_to_comment == 1) %}
+
+    {% if (getDI().getShared('session').has('user_id')) %}
+    <a href="/subredlite/mods/lock/{{ post.id }}"><button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Lock Comment Section (Mods)</button></a>
+
+    <h4>Add New Comment</h5>
+    <form action="/comment/index/create/{{ post.id }}" role="form" method="POST" id="newComment">
+        <textarea name="content" cols="55" rows="5" form="newComment" placeholder="Add new comment" class="form-control"></textarea><br>
+        <input type="submit" value="Add Comment" class="btn btn-primary">
+    </form>
+    {% else %}
+    <h6>Login To Comment</h6>
+    {% endif %}
 {% else %}
-<h6>Login To Comment</h6>
+<h6>Comment locked by moderator!</h6>
 {% endif %}
 
 <br><br>
@@ -42,6 +49,11 @@
     </div>  
     <div class="col-s-2">
         {% if (getDI().getShared('session').has('user_id')) %}
+            <form method='post' action='/comment/index/forcedelete/{{ comment.id() }}' class='rating-form'>
+                <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />
+                <button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Force Delete (Mods)</button>
+            </form>
+
             {% if (comment.userId() == getDI().getShared('session').get('user_id')) %}
             <a href="/comment/index/edit/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary' type='submit'>Edit</button></a>
             <form method='post' action='/comment/index/delete/{{ comment.id() }}' class='rating-form'>

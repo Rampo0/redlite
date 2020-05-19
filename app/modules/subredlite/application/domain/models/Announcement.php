@@ -1,8 +1,11 @@
 <?php
 
-namespace Redlite\Modules\Post\Models;
+namespace Redlite\Modules\Subredlite\Models;
 
-class Post{
+use Redlite\Modules\Post\Models\PostId;
+
+class Announcement
+{
 
     private $id;
     private $title;
@@ -14,7 +17,7 @@ class Post{
     private $created_at;
     private $isRatedByYou = false;
     private $able_to_comment = 1;
-    private $is_announcement = 0;
+    private $is_announcement = 1;
 
     public function __construct(PostId $id, $user_id, $title, $description , $file)
     {
@@ -92,8 +95,8 @@ class Post{
         $this->able_to_comment = $status;
     }
 
-    public static function createPost($user_id , $title , $description , $file){
-        return new Post(new PostId(), $user_id, $title , $description , $file);
+    public static function createAnnouncement($user_id , $title , $description , $file){
+        return new Announcement(new PostId(), $user_id, $title , $description , $file);
     }
 
 }
