@@ -13,6 +13,8 @@ class Post{
     private $rating = [];
     private $created_at;
     private $isRatedByYou = false;
+    private $able_to_comment = 1;
+    private $is_announcement = 0;
 
     public function __construct(PostId $id, $user_id, $title, $description , $file)
     {
@@ -78,6 +80,16 @@ class Post{
 
     public function is_rated(){
         return $this->isRatedByYou;
+    }
+
+    public function isAbleToComment()
+    {
+        return $this->able_to_comment;
+    }
+
+    public function setCommentLocked($status)
+    {
+        $this->able_to_comment = $status;
     }
 
     public static function createPost($user_id , $title , $description , $file){

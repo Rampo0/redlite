@@ -10,6 +10,9 @@ class Posts extends Model{
     public $file;
     public $user_id;
     public $created_at;
+    public $able_to_comment;
+    public $subredlite_id;
+    public $is_announcement;
 }
 
 ?>
