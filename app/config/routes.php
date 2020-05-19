@@ -29,6 +29,10 @@ foreach ($application->getModules() as $key => $module) {
         'params' => 3
     ]);
 
+
+    /**
+     * Subredlite Section because fuck it, hardcoded because it's so fucking dumb
+     */
     $router->add('/subredlite/([0-9])', [
         'namespace' => $namespace,
         'module' => 'subredlite',

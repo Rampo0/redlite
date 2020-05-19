@@ -13,7 +13,9 @@ class SubredliteController extends ControllerBase
         $id = $this->dispatcher->getParam("id");
 
         $subRedlite = $this->getSubRedliteService->execute($id);
+
         $this->view->subRedlite = $subRedlite;
+        $this->view->userId = 1;
     }
 }
 

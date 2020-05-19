@@ -13,14 +13,12 @@ class SubRedlite
 
     /**
      * Construct a new Subredlite.
-     * @param id: Subredlite Id.
      * @param name: Name of the subredlite.
      * @param desc: Description of the subredlite.
      * @param ownerId: Owner Id of the subredlite.
      */
-    public function __construct($id, $name, $desc, $ownerId)
+    public function __construct($name, $desc, $ownerId)
     {
-        $this->id = $id;
         $this->$name = $name;
         $this->$desc = $desc;
         $this->$ownerId = $ownerId;
@@ -70,9 +68,9 @@ class SubRedlite
     /**
      * Create a new subredlite.
      */
-    public static function createSubRedlite($id, $name, $desc, $ownerId)
+    public static function createSubRedlite($name, $desc, $ownerId)
     {
-        $subredlite = new SubRedlite($id, $name , $desc, $ownerId);
+        $subredlite = new SubRedlite($name , $desc, $ownerId);
         // Owner is mod by default.
         $subredlite->addMods($ownerId);
 

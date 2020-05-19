@@ -17,7 +17,7 @@ class SubRedliteRepository implements ISubRedliteRepository
     {
         $subredlite = new SubRedliteModel();
 
-        $subredlite->id = $model->id()->id;
+        $subredlite->id = $model->id();
         $subredlite->name = $model->name();
         $subredlite->description = $model->description();
         $subredlite->owner_id = $model->ownerId();
