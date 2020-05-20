@@ -4,15 +4,15 @@
 namespace Redlite\Modules\Post\Services;
 
 use Redlite\Modules\Post\Models\Post;
-use Redlite\Modules\Post\Models\PostMapper;
+use Redlite\Modules\Post\Models\PostMapperDTO;
 use Redlite\Modules\Post\InMemory\PostRepository;
-
+use Redlite\Modules\Post\InMemory\SqlPostRepository;
 
 class GetAllPostService{
 
     private $repository;
 
-    public function __construct(PostRepository $repository){
+    public function __construct(SqlPostRepository $repository){
         $this->repository = $repository;
     }
 
@@ -20,7 +20,7 @@ class GetAllPostService{
         try{
             $posts = $this->repository->findPosts();
             $ratings = $this->repository->findRatings();
-            $post_mapper = new PostMapper($posts, $ratings , $user_id);
+            $post_mapper = new PostMapperDTO($posts, $ratings , $user_id);
             $all_posts = $post_mapper->get();
             return $all_posts;
         }catch (\Exception $exception){

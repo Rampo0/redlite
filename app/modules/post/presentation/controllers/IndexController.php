@@ -5,6 +5,10 @@ namespace Redlite\Modules\Post\Controllers;
 
 use Redlite\Modules\Post\Models\Posts;
 use Redlite\Modules\Post\Models\Ratings;
+use Redlite\Modules\Post\Requests\CreatePostRequest;
+use Redlite\Modules\Post\Requests\UpdatePostRequest;
+use Redlite\Modules\Post\Requests\AddRatingRequest;
+use Redlite\Modules\Post\Requests\UnrateRequest;
 
 class IndexController extends ControllerBase
 {
@@ -25,15 +29,13 @@ class IndexController extends ControllerBase
     
         $post_id = $this->request->getPost('post_id');
 
-        $rating = Ratings::findFirst([
-        'conditions' => 'post_id = :post_id: and user_id = :user_id:',
-        'bind'       => [
-            'post_id' => $post_id,
-            'user_id' => $user_id
-        ],
-        ]);
+        $request = new UnrateRequest($user_id , $post_id);
 
-        $rating->delete();
+        $response = $this->unrateService->execute($request);
+
+        if($response->isError()){
+            echo $response->getMessage();
+        }
             
         return $this->response->redirect('/post');
     }
@@ -42,11 +44,13 @@ class IndexController extends ControllerBase
         
         $user_id = $this->getDI()->getShared("session")->get('user_id');
 
-        $rating = new Ratings();
-        $rating->post_id =  $this->request->getPost('post_id');
-        $rating->user_id = $user_id;
-        $rating->rating =  $this->request->getPost('rating');
-        $rating->save();
+        $request = new AddRatingRequest(
+            $user_id,
+            $this->request->getPost('rating'),
+            $this->request->getPost('post_id')
+        );
+
+        $response = $this->addRatingService->execute($request);
 
         return $this->response->redirect('/post');
     }
@@ -57,42 +61,26 @@ class IndexController extends ControllerBase
             echo "invalid csrf !!";
         }
 
-        // $user_id = $this->getDI()->getShared("session")->get('user_id');
-        $post_id = $this->request->getPost('post_id');
-        $post = Posts::findFirst([
-            'conditions' => 'id = :post_id:',
-            'bind'       => [
-                'post_id' => $post_id,
-            ],
-        ]);
+        $request = new UpdatePostRequest(
+            $this->request->getPost('post_id'),
+            $this->request->getPost('title'),
+            $this->request->getPost('description')
+        );
 
-        
         if ($this->request->hasFiles() == true) {
-            $file_name = "";
-            foreach ($this->request->getUploadedFiles() as $file) {
-                $file->moveTo('files/' . $file->getName());
-                $file_name = $file->getName();   
-            }
-            $post->file = $file_name;
+            $request->setFiles( $this->request->getUploadedFiles() );
         }
        
-        $post->title = $this->request->getPost('title');
-        $post->description = $this->request->getPost('description');
-        $post->save();
+        $response = $this->updatePostService->execute($request);
 
         return $this->response->redirect('/post');
         
     }
 
     public function deleteAction($post_id){
-        $post = Posts::findFirst([
-            'conditions' => 'id = :post_id:',
-            'bind'       => [
-                'post_id' => $post_id,
-            ],
-        ]);
+        
+        $response = $this->deletePostService->execute($post_id);
 
-        $post->delete();
         return $this->response->redirect('/post');
     }
 
@@ -103,27 +91,18 @@ class IndexController extends ControllerBase
         }
 
         $user_id = $this->getDI()->getShared("session")->get('user_id');
-        $file_name = "";
+        $request = new CreatePostRequest(
+            $user_id,
+            $this->request->getPost('title'),
+            $this->request->getPost('description')
+        );
+
         if ($this->request->hasFiles() == true) {
-            foreach ($this->request->getUploadedFiles() as $file) {
-                $file->moveTo('files/' . $file->getName());
-                $file_name = $file->getName();   
-            }
+            $request->setFiles( $this->request->getUploadedFiles() );
         }
        
-        try{
-
-            $this->createPostService->execute(
-                $user_id,
-                $this->request->getPost('title'),
-                $this->request->getPost('description'),
-                $file_name
-            );
+        $response = $this->createPostService->execute($request);
     
-        }catch (\Exception $e){
-            echo "something error !!";
-        }
-
         return $this->response->redirect('/post');
     }
 
