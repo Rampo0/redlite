@@ -22,7 +22,7 @@ class IndexController extends ControllerBase{
 
         $allComments = $this->getCommentService->execute(
             $post_id,
-            $user_id,
+            $user_id
         );
 
         $this->view->post = $post;
