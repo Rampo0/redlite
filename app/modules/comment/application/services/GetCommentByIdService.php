@@ -4,14 +4,12 @@
 namespace Redlite\Modules\Comment\Services;
 
 use Redlite\Modules\Comment\Models\Comment;
+use Redlite\Modules\Comment\Models\CommentMapper;
 use Redlite\Modules\Comment\Models\Ratingcom;
 use Redlite\Modules\Comment\InMemory\SQLCommentRepository;
 
-use Phalcon\Mvc\Model\Query;
-use Phalcon\Mvc\Model\Query\Builder;
-use Phalcon\Mvc\Model\Manager;
 
-class DeleteCommentService{
+class GetCommentByIdService{
 
     private $repository;
 
@@ -21,10 +19,14 @@ class DeleteCommentService{
 
     public function execute($comment_id){
         try{
-            $this->repository->delete($comment_id);
+            $comment = $this->repository->getCommentById($comment_id);
+            $newComment = Comment::createComment($comment["post_id"], $comment["user_id"], $comment["content"])->setId($comment["id"]);
+
+            return $newComment;
         }catch (\Exception $exception){
             throw new \Exception();
         }
+        return null;
         
     }
 }

@@ -5,21 +5,23 @@ namespace Redlite\Modules\Comment\Models;
 class CommentMapper{
     private $all_comments = [];
 
-    public function __construct($comments, $ratings, $user_id){
+    public function __construct($comments){
         foreach ($comments as $comment){
-            $this->all_comments[$comment->id] = Comment::createComment($comment->post_id, $comment->user_id, $comment->content)->setId($comment->id);
+            $this->all_comments[$comment["id"]] = Comment::createComment($comment["post_id"], $comment["user_id"], $comment["content"])->setId($comment["id"]);
         }
+    }
 
+    public function mapRating($ratings, $user_id){
         foreach ($ratings as $rating){
-            $comment = $this->all_comments[$rating->comment_id];
+            $comment = $this->all_comments[$rating["comment_id"]];
             if($comment){
-                $comment->addRate($rating->rating);
+                $comment->addRate($rating["rating"]);
 
-                if($rating->user_id == $user_id){
+                if($rating["user_id"] == $user_id){
                     $comment->setRate();
                 }
 
-                $this->all_comments[$rating->comment_id] = $comment;
+                $this->all_comments[$rating["comment_id"]] = $comment;
             }
         }
     }

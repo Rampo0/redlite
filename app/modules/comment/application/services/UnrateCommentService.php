@@ -4,14 +4,12 @@
 namespace Redlite\Modules\Comment\Services;
 
 use Redlite\Modules\Comment\Models\Comment;
+use Redlite\Modules\Comment\Models\CommentMapper;
 use Redlite\Modules\Comment\Models\Ratingcom;
 use Redlite\Modules\Comment\InMemory\SQLCommentRepository;
 
-use Phalcon\Mvc\Model\Query;
-use Phalcon\Mvc\Model\Query\Builder;
-use Phalcon\Mvc\Model\Manager;
 
-class DeleteCommentService{
+class UnrateCommentService{
 
     private $repository;
 
@@ -19,12 +17,13 @@ class DeleteCommentService{
         $this->repository = $repository;
     }
 
-    public function execute($comment_id){
+    public function execute($comment_id, $user_id){
         try{
-            $this->repository->delete($comment_id);
+            $this->repository->unrate($comment_id, $user_id);
         }catch (\Exception $exception){
             throw new \Exception();
         }
+        return null;
         
     }
 }
