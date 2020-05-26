@@ -1,5 +1,5 @@
 <h1>{{ post["title"] }}</h1>
-<img src="{{ url.get('files/' ~ postpost['id']) }}" alt="">
+<img src="{{ url.get('files/' ~ post['file']) }}" alt="">
 <h2>{{ post["description"] }}</h6>
 
 <br><br>
