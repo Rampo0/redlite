@@ -4,13 +4,13 @@
 namespace Redlite\Modules\Comment\Services;
 
 use Redlite\Modules\Comment\Models\Comment;
-use Redlite\Modules\Comment\InMemory\CommentRepository;
+use Redlite\Modules\Comment\InMemory\SQLCommentRepository;
 
 class CreateCommentService{
 
     private $repository;
 
-    public function __construct(CommentRepository $repository){
+    public function __construct(SQLCommentRepository $repository){
         $this->repository = $repository;
     }
 

@@ -8,13 +8,19 @@ use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Redlite\Modules\Post\Services\CreatePostService;
-use Redlite\Modules\Post\Services\GetAllPostService;
-use Redlite\Modules\Post\InMemory\PostRepository;
 
 use Redlite\Modules\Comment\Services\CreateCommentService;
 use Redlite\Modules\Comment\Services\GetCommentService;
+use Redlite\Modules\Comment\Services\DeleteCommentService;
+use Redlite\Modules\Comment\Services\GetCommentByIdService;
+use Redlite\Modules\Comment\Services\EditCommentService;
+use Redlite\Modules\Comment\Services\GetPostByIdService;
+use Redlite\Modules\Comment\Services\RateCommentService;
+use Redlite\Modules\Comment\Services\UnrateCommentService;
+
 use Redlite\Modules\Comment\InMemory\CommentRepository;
+use Redlite\Modules\Comment\InMemory\SQLCommentRepository;
+use Redlite\Modules\Post\InMemory\SqlPostRepository;
 
 class Module implements ModuleDefinitionInterface
 {
@@ -35,6 +41,8 @@ class Module implements ModuleDefinitionInterface
             'Redlite\Modules\Comment\Services' => __DIR__ . '/application/services/',
             'Redlite\Modules\Comment\InMemory' => __DIR__ . '/infrastructure/persistence/',
             'Redlite\Modules\Post\Models' => __DIR__ . '/../post/application/domain/models/',
+            'Redlite\Modules\Post\InMemory' => __DIR__ . '/../post/infrastructure/persistence/',
+            'Redlite\Modules\Post\Repository' => __DIR__ . '/../post/application/domain/repository/',
             'Redlite\Modules\Subredlite\Models' => __DIR__ . '/../subredlite/application/domain/models/',
         ]);
 
@@ -68,11 +76,35 @@ class Module implements ModuleDefinitionInterface
         // register service here
 
         $di->setShared('createCommentService', function(){
-            return new CreateCommentService(new CommentRepository);
+            return new CreateCommentService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('deleteCommentService', function(){
+            return new DeleteCommentService(new SQLCommentRepository($this->get('db')));
         });
 
         $di->setShared('getCommentService', function(){
-            return new GetCommentService(new CommentRepository);
+            return new GetCommentService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('getCommentByIdService', function(){
+            return new GetCommentByIdService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('editCommentService', function(){
+            return new EditCommentService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('rateCommentService', function(){
+            return new RateCommentService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('unrateCommentService', function(){
+            return new UnrateCommentService(new SQLCommentRepository($this->get('db')));
+        });
+
+        $di->setShared('getPostByIdService', function(){
+            return new GetPostByIdService(new SQLPostRepository($this->get('db')));
         });
 
         // register events here
