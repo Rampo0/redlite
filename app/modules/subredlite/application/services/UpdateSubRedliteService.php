@@ -10,7 +10,7 @@ require_once __DIR__ . "/../../../../../vendor/autoload.php";
 
 use Ramsey\Uuid\Uuid;
 
-class CreateSubRedliteService
+class UpdateSubRedliteService
 {
 
     private $repository;
@@ -20,12 +20,16 @@ class CreateSubRedliteService
         $this->repository = $repository;
     }
 
-    public function execute($name, $desc, $ownerId)
+    public function execute($id, $name, $desc)
     {
         try
         {
-            $newSubredlite = Subredlite::createSubRedlite(Uuid::uuid4()->toString(), $name , $desc, $ownerId);
-            $this->repository->createSubRedlite($newSubredlite);
+            $subredlite = $this->repository->findSubRedliteById($id);
+            $subredlite['id'] = $id;
+            $subredlite['name'] = $name;
+            $subredlite['description'] = $desc;
+
+            $this->repository->updateSubRedlite($subredlite);
         }
         catch (\Exception $exception)
         {

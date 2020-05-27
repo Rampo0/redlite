@@ -39,7 +39,7 @@
                     $isOwner = false;
 
                     foreach ($subredliteMods as $mod) {
-                        if ($mod->user_id == $userId && $mod->active == 1) {
+                        if ($mod->userId() == $userId && $mod->active() == 1) {
                             $isOwner = true;
                             break;
                         }
@@ -77,11 +77,13 @@
                         echo "<div class='list-group'>";
                         
                         foreach($subredliteMods as $mods) {
-                            if ($mods->user_id != $subredliteOwner ) {
-                                if ($mods->active == 1) {
+                            if ($mods->userId() != $subredliteOwner ) {
+                                $user_id = $mods->userId();
+                                
+                                if ($mods->active() == 1) {
                                     echo " 
                                     <a href='#' class='list-group-item list-group-item-action flex-column align-items-start'>
-                                        <p class='mb-1'>$mods->user_id</p>
+                                        <p class='mb-1'>$user_id</p>
                                         <small class='text-muted'><a href='/subredlite/mods/delete/$mods->id' ><small style='color: red;'>Remove Access</small></a></small>
                                     </a>
                                         
@@ -89,7 +91,7 @@
                                 } else {
                                     echo " 
                                     <a href='#' class='list-group-item list-group-item-action flex-column align-items-start list-group-item-dark'>
-                                        <p class='mb-1'>$mods->user_id</p>
+                                        <p class='mb-1'>$user_id</p>
                                         <small class='text-muted'>Non-Active Mods</small>
                                     </a>
                                         
@@ -197,7 +199,7 @@
 <div class="model-announcement-container">
   
     <div class="model center">
-        <form class="post-form" action="/subredlite/index/createannouncement/" method="post" enctype="multipart/form-data">
+        <form class="post-form" action="/subredlite/mods/createannouncement/" method="post" enctype="multipart/form-data">
             
             <div class="form-group">
                 <label for="exampleFormControlInput1">Title</label>

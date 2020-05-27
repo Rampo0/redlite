@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Redlite\Modules\Subredlite\Controllers;
 
-use Redlite\Modules\Subredlite\Models\SubRedliteModel;
+use Redlite\Modules\Subredlite\Models\SubRedlite;
 
 class IndexController extends ControllerBase
 {
@@ -55,59 +55,18 @@ class IndexController extends ControllerBase
         return $this->response->redirect('/subredlite');
     }
 
-    public function createAnnouncementAction()
-    {
-
-        if (!$this->security->checkToken())
-        {
-            echo "invalid csrf !!";
-        }
-
-        $user_id = $this->getDI()->getShared("session")->get('user_id');
-
-        $file_name = "";
-        if ($this->request->hasFiles() == true)
-        {
-            foreach ($this->request->getUploadedFiles() as $file)
-            {
-                $file->moveTo('files/' . $file->getName());
-                $file_name = $file->getName();   
-            }
-        }
-
-        $redliteId = $this->request->getPost('subredlite-id');
-       
-        try
-        {
-            $this->createAnnouncementService->execute(
-                $user_id,
-                $this->request->getPost('title'),
-                $this->request->getPost('description'),
-                $file_name,
-                $redliteId
-            );
-    
-        }
-        catch (\Exception $e)
-        {
-            echo "something error !!";
-        }
-
-        return $this->response->redirect('/subredlite');
-    }
-
     public function deleteAction($subredliteId)
     {
-        $subredlite = SubRedliteModel::findFirst([
-            'conditions' => 'id = :subredliteId:',
-            'bind'       => [
-                'subredliteId' => $subredliteId,
-            ],
-        ]);
+        // $subredlite = SubRedliteModel::findFirst([
+        //     'conditions' => 'id = :subredliteId:',
+        //     'bind'       => [
+        //         'subredliteId' => $subredliteId,
+        //     ],
+        // ]);
 
-        $subredlite->delete();
+        // $subredlite->delete();
 
-        return $this->response->redirect('/subredlite');
+        // return $this->response->redirect('/subredlite');
     }
 
     public function editAction()
@@ -119,16 +78,11 @@ class IndexController extends ControllerBase
 
         $redliteId = $this->request->getPost('edit-subredlite-id');
 
-        $subredlite = SubRedliteModel::findFirst([
-            'conditions' => 'id = :subs_id:',
-            'bind'       => [
-                'subs_id' => $redliteId,
-            ],
-        ]);
-
-        $subredlite->name = $this->request->getPost('edit-name');
-        $subredlite->description = $this->request->getPost('edit-description');
-        $subredlite->save();
+        $this->updateSubRedliteService->execute(
+            $redliteId,
+            $this->request->getPost('edit-name'),
+            $this->request->getPost('edit-description')
+        );
 
         return $this->response->redirect('/subredlite');
     }

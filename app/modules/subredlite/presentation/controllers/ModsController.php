@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Redlite\Modules\Subredlite\Controllers;
 
-use Redlite\Modules\Subredlite\Models\SubRedliteModel;
 use Redlite\Modules\Subredlite\Models\Moderators;
 use Redlite\Modules\Post\Models\Post;
 use Redlite\Modules\Post\Models\Posts;
@@ -29,19 +28,12 @@ class ModsController extends ControllerBase
     public function deleteAction()
     {        
         $modsId = $this->dispatcher->getParam('id');
-
-        $moderator = Moderators::findFirst([
-            'conditions' => 'id = :mods_id:',
-            'bind'       => [
-                'mods_id' => $modsId,
-            ],
-        ]);
-
-        $moderator->active = 0;
-        $moderator->save();
+        $this->removeModAccessService->execute($modsId);
 
         return $this->response->redirect("/subredlite");
     }
+
+    
 
     
     public function lockAction($post_id)

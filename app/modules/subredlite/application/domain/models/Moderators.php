@@ -1,30 +1,65 @@
 <?php
 
 namespace Redlite\Modules\Subredlite\Models;
-use Phalcon\Mvc\Model;
 
-class Moderators extends Model
+class Moderators
 {
 
-    /**
-     * Id of the field.
-     */
-    public $id;
+    private $id;
+    private $subredliteId;
+    private $userId;
+    private $active;
+
+    public function __construct($id, $subredliteId, $userId, $active)
+    {
+        $this->id = $id;
+        $this->subredliteId = $subredliteId;
+        $this->userId = $userId;
+        $this->active = $active;
+    }
 
     /**
-     * Id of the subredlite.
+     * Getter for id
      */
-    public $subredlite_id;
+    public function id()
+    {
+        return $this->id;
+    }
 
     /**
-     * Id of the user.
+     * Getter for subredliteId
      */
-    public $user_id;
+    public function subredliteId()
+    {
+        return $this->subredliteId;
+    }
 
     /**
-     * Whether this user is still an active mod.
+     * Getter for userId
      */
-    public $active;
+    public function userId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Getter for active
+     */
+    public function active()
+    {
+        return $this->active;
+    }
+
+
+    /**
+     * Create a new subredlite.
+     */
+    public static function createModerator($id, $subredlite_id, $user_id, $active)
+    {
+        $subredlite = new Moderators($id, $subredlite_id , $userId, $active);
+
+        return $subredlite;
+    }
 }
 
 ?>

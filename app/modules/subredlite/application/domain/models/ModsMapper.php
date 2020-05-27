@@ -2,6 +2,9 @@
 
 namespace Redlite\Modules\Subredlite\Models;
 
+/**
+ * DTO class for mapping mods to their subredlite respectively.
+ */
 class ModsMapper
 { 
     private $all_subs = [];
@@ -10,18 +13,18 @@ class ModsMapper
     {
         foreach ($subs as $sub)
         {
-            $newSubs = new SubRedlite($sub->id, $sub->name, $sub->description, $sub->owner_id);
+            $newSubs = new SubRedlite($sub['id'], $sub['name'], $sub['description'], $sub['owner_id']);
 
-            $this->all_subs[$sub->id] = $newSubs;
+            $this->all_subs[$sub['id']] = $newSubs;
         }
 
         foreach ($mods as $mod)
         {
-            $sub = $this->all_subs[$mod->subredlite_id];
-            $modObj = new SubsMod($mod->id, $mod->subredlite_id, $mod->user_id, $mod->active);
+            $sub = $this->all_subs[$mod['subredlite_id']];
+            $modObj = new Moderators($mod['id'], $mod['subredlite_id'], $mod['user_id'], $mod['active']);
             $sub->addMods($modObj);
 
-            $this->all_subs[$mod->subredlite_id] = $sub;
+            $this->all_subs[$mod['subredlite_id']] = $sub;
         }
     }
 

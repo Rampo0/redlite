@@ -9,10 +9,12 @@ use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Redlite\Modules\Subredlite\Services\CreateSubRedliteService;
+use Redlite\Modules\Subredlite\Services\UpdateSubRedliteService;
 use Redlite\Modules\Subredlite\Services\CreateAnnouncementService;
 use Redlite\Modules\Subredlite\Services\GetAllSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetSubRedliteService;
 use Redlite\Modules\Subredlite\Services\AddModsService;
+use Redlite\Modules\Subredlite\Services\RemoveModAccessService;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
 class Module implements ModuleDefinitionInterface
@@ -69,27 +71,37 @@ class Module implements ModuleDefinitionInterface
 
         $di->setShared('createSubRedliteService', function()
         {
-            return new CreateSubRedliteService(new SubRedliteRepository());
+            return new CreateSubRedliteService(new SubRedliteRepository($this->get('db')));
+        });
+
+        $di->setShared('updateSubRedliteService', function()
+        {
+            return new UpdateSubRedliteService(new SubRedliteRepository($this->get('db')));
         });
 
         $di->setShared('createAnnouncementService', function()
         {
-            return new CreateAnnouncementService(new SubRedliteRepository());
+            return new CreateAnnouncementService(new SubRedliteRepository($this->get('db')));
         });
 
         $di->setShared('getAllSubRedliteService', function()
         {
-            return new GetAllSubRedliteService(new SubRedliteRepository());
+            return new GetAllSubRedliteService(new SubRedliteRepository($this->get('db')));
         });
 
         $di->setShared('getSubRedliteService', function()
         {
-            return new GetSubRedliteService(new SubRedliteRepository());
+            return new GetSubRedliteService(new SubRedliteRepository($this->get('db')));
         });
 
         $di->setShared('addModsService', function()
         {
-            return new AddModsService(new SubRedliteRepository());
+            return new AddModsService(new SubRedliteRepository($this->get('db')));
+        });
+
+        $di->setShared('removeModAccessService', function()
+        {
+            return new RemoveModAccessService(new SubRedliteRepository($this->get('db')));
         });
     }
 }
