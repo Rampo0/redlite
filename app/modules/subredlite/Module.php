@@ -14,6 +14,8 @@ use Redlite\Modules\Subredlite\Services\CreateAnnouncementService;
 use Redlite\Modules\Subredlite\Services\GetAllSubRedliteService;
 use Redlite\Modules\Subredlite\Services\GetSubRedliteService;
 use Redlite\Modules\Subredlite\Services\AddModsService;
+use Redlite\Modules\Subredlite\Services\LockCommentService;
+use Redlite\Modules\Subredlite\Services\ForceDeleteCommentService;
 use Redlite\Modules\Subredlite\Services\RemoveModAccessService;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
@@ -102,6 +104,16 @@ class Module implements ModuleDefinitionInterface
         $di->setShared('removeModAccessService', function()
         {
             return new RemoveModAccessService(new SubRedliteRepository($this->get('db')));
+        });
+
+        $di->setShared('lockCommentService', function()
+        {
+            return new LockCommentService(new SubRedliteRepository($this->get('db')));
+        });
+
+        $di->setShared('forceDeleteCommentService', function()
+        {
+            return new ForceDeleteCommentService(new SubRedliteRepository($this->get('db')));
         });
     }
 }

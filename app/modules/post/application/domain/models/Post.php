@@ -16,6 +16,7 @@ class Post{
     private $isRatedByYou = false;
     private $able_to_comment = 1;
     private $is_announcement = 0;
+    private $subredlite_id;
 
     public function __construct(PostId $id, $user_id, $title, $description , $file)
     {
@@ -115,6 +116,16 @@ class Post{
     public function setCommentLocked($status)
     {
         $this->able_to_comment = $status;
+    }
+
+    public function subRedliteId()
+    {
+        return $this->subredlite_id;
+    }
+
+    public function setSubRedliteId($subredlite_id)
+    {
+        $this->subredlite_id = $subredlite_id;
     }
 
     public static function createPost($user_id , $title , $description , $file){

@@ -53,6 +53,21 @@ interface ISubRedliteRepository
      * Function to to update mods.
      */
     public function updateMod(array $mods);
+
+    /**
+     * Function to to update mods.
+     */
+    public function getModStatus($user_id, $subredlite_id);
+
+    /**
+     * Function to lock comment section.
+     */
+    public function lockCommentSection($post_id);
+
+    /**
+     * Function to force remove a comment from post.
+     */
+    public function forceRemoveCommentSection($comment_id);
 }
 
 ?>

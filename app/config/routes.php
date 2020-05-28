@@ -20,6 +20,15 @@ foreach ($application->getModules() as $key => $module) {
         'action' => 'index',
         'params' => 2
     ]);
+    
+    $router->add('/'.$key.'/:controller/:action/:param1/:param2', [
+        'namespace' => $namespace,
+        'module' => $key,
+        'controller' => 1,
+        'action' => 2,
+        'param1' => 3,
+        'param2' => 4
+    ]);
 
     $router->add('/'.$key.'/:controller/:action/:params', [
         'namespace' => $namespace,

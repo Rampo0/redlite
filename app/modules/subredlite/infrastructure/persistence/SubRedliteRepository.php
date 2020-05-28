@@ -154,6 +154,53 @@ class SubRedliteRepository implements ISubRedliteRepository
 
         return $this->database->execute($statement, $params);
     }
+
+    /**
+     * Function to to update mods.
+     */
+    public function getModStatus($user_id, $subredlite_id)
+    {
+        $statement = sprintf("SELECT * FROM moderators WHERE moderators.user_id = :user_id AND moderators.subredlite_id = :subredlite_id AND moderators.active = 1");
+        $param = [
+            'user_id' => $user_id,
+            'subredlite_id' => $subredlite_id
+        ];
+
+        return $this->database
+            ->query($statement, $param)
+            ->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Function to lock comment section
+     */
+    public function lockCommentSection($post_id)
+    {
+        $statement = sprintf("UPDATE posts SET posts.able_to_comment = 0 WHERE posts.id = :post_id");
+        $params = [
+            'post_id' => $post_id
+        ];
+
+        return $this->database->execute($statement, $params);
+    }
+
+    /**
+     * Function to force remove a comment from post.
+     */
+    public function forceRemoveCommentSection($comment_id)
+    {
+        $params = [
+            'comment_id' => $comment_id
+        ];
+
+        $statement = sprintf("DELETE FROM comments WHERE comments.id = :comment_id");
+        $this->database->execute($statement, $params);
+
+        $statement = sprintf("DELETE FROM ratingcom WHERE ratingcom.comment_id = :comment_id");
+        $this->database->execute($statement, $params);
+
+        return;
+    }
 }
 
 

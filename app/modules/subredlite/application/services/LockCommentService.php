@@ -3,12 +3,11 @@
 
 namespace Redlite\Modules\Subredlite\Services;
 
-use Redlite\Modules\Subredlite\Models\SubRedlite;
+use Redlite\Modules\Subredlite\Models\Moderators;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
-class UpdateSubRedliteService
+class LockCommentService
 {
-
     private $repository;
 
     public function __construct(SubRedliteRepository $repository)
@@ -16,23 +15,22 @@ class UpdateSubRedliteService
         $this->repository = $repository;
     }
 
-    public function execute($id, $name, $desc)
+    public function execute($subredlite_id, $user_id, $post_id)
     {
         try
         {
-            $subredlite = $this->repository->findSubRedliteById($id);
-            $subredlite['id'] = $id;
-            $subredlite['name'] = $name;
-            $subredlite['description'] = $desc;
+            $status = $this->repository->getModStatus($user_id, $subredlite_id);
 
-            $this->repository->updateSubRedlite($subredlite);
+            if ($status)
+            {
+                $this->repository->lockCommentSection($post_id);
+            }
         }
         catch (\Exception $exception)
         {
             throw new \Exception();
         }
     }
-
 }
 
 
