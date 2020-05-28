@@ -18,7 +18,7 @@ class IndexController extends ControllerBase
         $sessions = $this->getDI()->getShared("session");
 
         if ($sessions->has("user_id")) {
-            return $this->response->redirect("/");
+            return $this->response->redirect("/post");
         }
     }
 
@@ -29,7 +29,7 @@ class IndexController extends ControllerBase
         $sessions = $this->getDI()->getShared("session");
 
         if ($sessions->has("user_id")) {
-            return $this->response->redirect("/");
+            return $this->response->redirect("/post");
         }
         
     }
@@ -75,7 +75,7 @@ class IndexController extends ControllerBase
             );
             
             if($user){
-                return $this->response->redirect('/');
+                return $this->response->redirect('/post');
             }else{
                 return $this->response->redirect('/user');    
             }
