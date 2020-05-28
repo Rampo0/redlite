@@ -1,15 +1,15 @@
-<h1>{{ post.title }}</h1>
-<img src="{{ url.get('files/' ~ post.file) }}" alt="">
-<h2>{{ post.description }}</h6>
+<h1>{{ post["title"] }}</h1>
+<img src="{{ url.get('files/' ~ post['file']) }}" alt="">
+<h2>{{ post["description"] }}</h6>
 
 <br><br>
-{% if (post.able_to_comment == 1) %}
+{% if (post["able_to_comment"] == 1) %}
 
     {% if (getDI().getShared('session').has('user_id')) %}
-    <a href="/subredlite/mods/lock/{{ post.id }}"><button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Lock Comment Section (Mods)</button></a>
+    <a href="/subredlite/mods/lock/{{ post["subredlite_id"] }}/{{ post["id"] }}"><button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Lock Comment Section (Mods)</button></a>
 
     <h4>Add New Comment</h5>
-    <form action="/comment/index/create/{{ post.id }}" role="form" method="POST" id="newComment">
+    <form action="/comment/index/create/{{ post["id"] }}" role="form" method="POST" id="newComment">
         <textarea name="content" cols="55" rows="5" form="newComment" placeholder="Add new comment" class="form-control"></textarea><br>
         <input type="submit" value="Add Comment" class="btn btn-primary">
     </form>
@@ -39,7 +39,6 @@
             {% else %}
             <form method='post' action='/comment/index/rating/{{ comment.id() }}' class='rating-form form-inline'>
                 <input placeholder='Rate 1 - 5' step='1' max='5' type='number' name='rating' class='form-control rating-input' ></input>
-                <input id='ed-postid' type='hidden' name='comment_id' value='{{ comment.id() }}' />
                 <button style='margin : 3px' class='btn btn-primary' type='submit'>Rate</button>
             </form>
             {% endif %}
@@ -49,15 +48,15 @@
     </div>  
     <div class="col-s-2">
         {% if (getDI().getShared('session').has('user_id')) %}
-            <form method='post' action='/comment/index/forcedelete/{{ comment.id() }}' class='rating-form'>
-                <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />
+            <form method='post' action='/subredlite/mods/forcedelete/{{ post["subredlite_id"] }}/{{ comment.id() }}' class='rating-form'>
+                <input id='ed-postid' type='hidden' name='post_id' value='{{ post["id"] }}' />
                 <button style='margin : 3px' class='btn btn-danger btn-sm' type='submit'>Force Delete (Mods)</button>
             </form>
 
             {% if (comment.userId() == getDI().getShared('session').get('user_id')) %}
             <a href="/comment/index/edit/{{ comment.id() }}"><button style='margin : 3px' class='btn btn-primary' type='submit'>Edit</button></a>
             <form method='post' action='/comment/index/delete/{{ comment.id() }}' class='rating-form'>
-                <input id='ed-postid' type='hidden' name='post_id' value='{{ post.id }}' />
+                <input id='ed-postid' type='hidden' name='post_id' value='{{ post["id"] }}' />
                 <button style='margin : 3px' class='btn btn-danger' type='submit'>Delete</button>
             </form>
             {% endif %}

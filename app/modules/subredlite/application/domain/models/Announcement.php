@@ -28,15 +28,18 @@ class Announcement
         $this->id = $id;
     }
 
-    public function id(){
+    public function id()
+    {
         return $this->id;
     }
 
-    public function totalRating(){
+    public function totalRating()
+    {
         return $totalRating;
     }
 
-    public function averageRating(){
+    public function averageRating()
+    {
         $total = 0;
         foreach ($this->rating as $rate) {
             $total+=$rate->rating;
@@ -49,39 +52,48 @@ class Announcement
         return 0;
     }
 
-    public function description(){
+    public function description()
+    {
         return $this->description;
     }
 
-    public function title(){
+    public function title()
+    {
         return $this->title;
     }
 
-    public function user_id(){
+    public function user_id()
+    {
         return $this->user_id;
     }
 
-    public function created_at(){
+    public function created_at()
+    {
         return $this->created_at;
     }
 
-    public function file(){
+    public function file()
+    {
         return $this->file;
     }
 
-    public function appendRating($rate){
+    public function appendRating($rate)
+    {
         array_push($this->rating , $rate);
     } 
 
-    public function setCreatedAt($created_at){
+    public function setCreatedAt($created_at)
+    {
         $this->created_at = $created_at;
     }
 
-    public function setIsRated($isRated){
+    public function setIsRated($isRated)
+    {
         $this->isRatedByYou = $isRated;
     }
 
-    public function is_rated(){
+    public function is_rated()
+    {
         return $this->isRatedByYou;
     }
 
@@ -98,7 +110,6 @@ class Announcement
     public static function createAnnouncement($user_id , $title , $description , $file){
         return new Announcement(new PostId(), $user_id, $title , $description , $file);
     }
-
 }
 
 

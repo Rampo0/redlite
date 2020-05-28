@@ -3,14 +3,10 @@
 
 namespace Redlite\Modules\Subredlite\Services;
 
-use Redlite\Modules\Subredlite\Models\SubRedlite;
+use Redlite\Modules\Subredlite\Models\Moderators;
 use Redlite\Modules\Subredlite\InMemory\SubRedliteRepository;
 
-require_once __DIR__ . "/../../../../../vendor/autoload.php";
-
-use Ramsey\Uuid\Uuid;
-
-class CreateSubRedliteService
+class RemoveModAccessService
 {
 
     private $repository;
@@ -20,12 +16,15 @@ class CreateSubRedliteService
         $this->repository = $repository;
     }
 
-    public function execute($name, $desc, $ownerId)
+    public function execute($id)
     {
         try
         {
-            $newSubredlite = Subredlite::createSubRedlite(Uuid::uuid4()->toString(), $name , $desc, $ownerId);
-            $this->repository->createSubRedlite($newSubredlite);
+            $mod = $this->repository->findModById($id);
+            $mod['id'] = $id;
+            $mod['active'] = 0;
+
+            $this->repository->updateMod($mod);
         }
         catch (\Exception $exception)
         {

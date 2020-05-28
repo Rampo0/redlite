@@ -1,6 +1,7 @@
 <?php
 
 namespace Redlite\Modules\Post\Models;
+use Exception;
 
 class Post{
 
@@ -15,6 +16,7 @@ class Post{
     private $isRatedByYou = false;
     private $able_to_comment = 1;
     private $is_announcement = 0;
+    private $subredlite_id;
 
     public function __construct(PostId $id, $user_id, $title, $description , $file)
     {
@@ -33,10 +35,34 @@ class Post{
         return $totalRating;
     }
 
+    public static function addRating($allRatings ,$user_id , $rating , $post_id){
+        $newRating = new Rating($user_id, $rating , $post_id);
+
+        if($allRatings){
+            $is_exist = false;
+            foreach ($allRatings as $rating) {
+                $currentRating = new Rating( $rating['user_id'] , $rating['rating'] , $rating['post_id']);
+                if($newRating->equals($currentRating)){
+                    $is_exist = true;
+                    break;
+                }
+            }
+
+            if($is_exist == false){
+                return $newRating;
+            }
+
+        }else{
+            return $newRating;
+        }
+
+        return null;
+    }
+
     public function averageRating(){
         $total = 0;
         foreach ($this->rating as $rate) {
-            $total+=$rate->rating;
+            $total+=$rate['rating'];
         }
         
         if(count($this->rating) > 0){
@@ -90,6 +116,16 @@ class Post{
     public function setCommentLocked($status)
     {
         $this->able_to_comment = $status;
+    }
+
+    public function subRedliteId()
+    {
+        return $this->subredlite_id;
+    }
+
+    public function setSubRedliteId($subredlite_id)
+    {
+        $this->subredlite_id = $subredlite_id;
     }
 
     public static function createPost($user_id , $title , $description , $file){

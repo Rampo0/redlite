@@ -12,7 +12,17 @@ interface ISubRedliteRepository
      * Function to create a new subredlite.
      * @param model: new subredlite instance.
      */
-    public function createSubRedlite($name, $desc, $ownerId);
+    public function createSubRedlite(SubRedlite $subredlite);
+
+    /**
+     * Function to get Subredlite by it's ID.
+     */
+    public function findSubRedliteById($id);
+
+    /**
+     * Function to to update subredlite.
+     */
+    public function updateSubRedlite(array $subredlite);
 
     /**
      * Function to create a new announcement.
@@ -30,15 +40,34 @@ interface ISubRedliteRepository
     public function getAllSubRedlite();
 
     /**
-     * Function to get subredlite by it's id.
-     * @param id: Integer id of the subredlite.
-     */
-    public function getSubRedlite($id);
-
-    /**
      * Function to get all moderators of subredlite.
      */
     public function getAllMods();
+
+    /**
+     * Function to get moderator by its ID.
+     */
+    public function findModById($id);
+
+    /**
+     * Function to to update mods.
+     */
+    public function updateMod(array $mods);
+
+    /**
+     * Function to to update mods.
+     */
+    public function getModStatus($user_id, $subredlite_id);
+
+    /**
+     * Function to lock comment section.
+     */
+    public function lockCommentSection($post_id);
+
+    /**
+     * Function to force remove a comment from post.
+     */
+    public function forceRemoveCommentSection($comment_id);
 }
 
 ?>
